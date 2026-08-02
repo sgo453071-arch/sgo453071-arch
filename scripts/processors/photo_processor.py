@@ -1,4 +1,4 @@
-"""Image processor for world-class ASCII portrait prep using edge detection and CLAHE tone balancing."""
+"""Image processor for full-frame ASCII portrait prep rendering full suit and hands."""
 
 import sys
 from pathlib import Path
@@ -35,7 +35,7 @@ except Exception:
 
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg into a masterclass high-detail prepped image.
+    """Preprocess assets/profile.jpg keeping 100% full frame to capture arms, hands, and suit.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -65,56 +65,54 @@ def process_profile_photo() -> Path:
                 except Exception as rembg_err:
                     logger.warning(f"rembg background removal bypassed: {rembg_err}")
 
-            # Crop both suit shoulders and full head for complete portrait symmetry
-            w, h = processed.size
-            crop_left = int(w * 0.05)
-            crop_top = int(h * 0.02)
-            crop_right = int(w * 0.95)
-            crop_bottom = int(h * 0.88)
-            cropped = processed.crop((crop_left, crop_top, crop_right, crop_bottom))
+            # Keep 100% full frame width and height so right arm, hand, and suit sleeve are preserved
+            full_frame = processed
 
             # Advanced Tone Balancing & Feature Enhancement using OpenCV if available
             if HAS_CV2:
                 try:
-                    # Convert PIL image to OpenCV BGR
-                    open_cv_image = cv2.cvtColor(np.array(cropped.convert("RGB")), cv2.COLOR_RGB2BGR)
+                    open_cv_image = cv2.cvtColor(np.array(full_frame.convert("RGB")), cv2.COLOR_RGB2BGR)
                     gray = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
 
-                    # CLAHE (Contrast Limited Adaptive Histogram Equalization)
-                    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
-                    equalized = clahe.apply(gray)
+                    # Gamma correction to illuminate lower-right hand and arm area
+                    gamma = 1.3
+                    inv_gamma = 1.0 / gamma
+                    table = np.array([((i / 255.0) ** inv_gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
+                    gamma_corrected = cv2.LUT(gray, table)
 
-                    # Canny Edge Detection for sharp facial/suit contours
-                    edges = cv2.Canny(equalized, 50, 150)
+                    # CLAHE Adaptive Histogram Equalization
+                    clahe = cv2.createCLAHE(clipLimit=3.5, tileGridSize=(8, 8))
+                    equalized = clahe.apply(gamma_corrected)
 
-                    # Blend Equalized Grayscale (75%) + Edge Map (25%)
-                    blended = cv2.addWeighted(equalized, 0.75, edges, 0.25, 0)
+                    # Canny Edge Detection for sharp hand, suit, and face contours
+                    edges = cv2.Canny(equalized, 40, 140)
 
-                    # Convert back to PIL Image
+                    # Blend Equalized Grayscale (80%) + Edge Map (20%)
+                    blended = cv2.addWeighted(equalized, 0.80, edges, 0.20, 0)
+
                     processed_pil = Image.fromarray(blended)
                     processed_pil.save(output_path, "PNG")
-                    logger.info(f"Generated OpenCV CLAHE-enhanced portrait -> {output_path}")
+                    logger.info(f"Generated full-frame arm & hand enhanced portrait -> {output_path}")
                     return output_path
                 except Exception as cv_err:
                     logger.warning(f"OpenCV enhancement bypassed: {cv_err}")
 
             # Fallback PIL Processing
-            gray_pil = cropped.convert("L")
+            gray_pil = full_frame.convert("L")
 
             # Equalize and Autocontrast
             equalized_pil = ImageOps.equalize(gray_pil)
-            autocontrasted = ImageOps.autocontrast(gray_pil, cutoff=2)
-            blended_pil = Image.blend(equalized_pil, autocontrasted, alpha=0.6)
+            autocontrasted = ImageOps.autocontrast(equalized_pil, cutoff=1)
 
             # Edge Sharpening Filter
-            sharpened = blended_pil.filter(ImageFilter.SHARPEN)
+            sharpened = autocontrasted.filter(ImageFilter.SHARPEN)
 
             # Boost contrast
             enhancer = ImageEnhance.Contrast(sharpened)
-            boosted = enhancer.enhance(1.9)
+            boosted = enhancer.enhance(1.8)
 
             boosted.save(output_path, "PNG")
-            logger.info(f"Successfully processed masterclass photo -> {output_path}")
+            logger.info(f"Successfully processed full-frame photo -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")

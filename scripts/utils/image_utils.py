@@ -9,7 +9,7 @@ from .logger import get_logger
 
 logger = get_logger("image_utils")
 
-# Masterpiece high-contrast ASCII character ramp
+# Masterpiece character ramp for dark terminal background
 ASCII_RAMP = "   ..::-=+*#%@"
 
 
@@ -27,11 +27,11 @@ def ensure_profile_image() -> Path:
 
 def convert_image_to_ascii(
     image_path: Path,
-    cols: int = 68,
+    cols: int = 64,
     aspect_ratio: float = 0.48,
-    contrast_factor: float = 2.0,
+    contrast_factor: float = 1.9,
 ) -> List[str]:
-    """Convert prepped image into world-class high-resolution ASCII portrait.
+    """Convert prepped image into full-body ASCII portrait rendering arms, hands, and suit.
 
     Args:
         image_path: Path to source image.
@@ -50,19 +50,19 @@ def convert_image_to_ascii(
 
         with Image.open(image_path) as img:
             gray = img.convert("L")
-            enhanced = ImageOps.autocontrast(gray, cutoff=2)
+            enhanced = ImageOps.autocontrast(gray, cutoff=1)
 
-            # Edge sharpening for eyes, tie, and suit contours
+            # Edge sharpening for hand, suit, and facial contours
             sharpened = enhanced.filter(ImageFilter.SHARPEN)
 
             # Contrast boost
             enhancer = ImageEnhance.Contrast(sharpened)
             boosted = enhancer.enhance(contrast_factor)
 
-            # Resize to 68-column high-detail ASCII grid
+            # Resize to 64-column grid
             w, h = boosted.size
             rows = int((h / w) * cols * aspect_ratio)
-            rows = max(32, min(rows, 42))
+            rows = max(32, min(rows, 40))
 
             resized = boosted.resize((cols, rows), Image.Resampling.LANCZOS)
             pixels = list(resized.getdata())
@@ -73,8 +73,8 @@ def convert_image_to_ascii(
                 line = []
                 for x in range(cols):
                     pixel_val = pixels[y * cols + x]
-                    # Pure black background (< 15) stays clean space ' '
-                    if pixel_val < 15:
+                    # Only pure black outer canvas (< 14) becomes space ' ', preserving hand & arm contours
+                    if pixel_val < 14:
                         line.append(" ")
                     else:
                         char_idx = int((pixel_val / 255.0) * (ramp_len - 1))
