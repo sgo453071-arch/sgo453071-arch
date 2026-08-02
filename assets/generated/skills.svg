@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 310" width="800" height="310">
+<defs>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');
+.term-window {
+font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+fill: #c9d1d9;
+}
+.term-title {
+font-size: 13px;
+font-weight: 600;
+fill: #8b949e;
+}
+@keyframes popInBox {
+from { opacity: 0; transform: translateY(12px) scale(0.96); }
+to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.skill-box {
+opacity: 0;
+animation: popInBox 0.4s ease-out forwards;
+}
+.cat-title {
+font-size: 13px;
+font-weight: 700;
+}
+.tag-pill {
+font-size: 11px;
+font-weight: 600;
+fill: #c9d1d9;
+}
+.sb-0 { animation-delay: 0ms; }
+.sb-1 { animation-delay: 120ms; }
+.sb-2 { animation-delay: 240ms; }
+.sb-3 { animation-delay: 360ms; }
+.sb-4 { animation-delay: 480ms; }
+.sb-5 { animation-delay: 600ms; }
+.sb-6 { animation-delay: 720ms; }
+</style>
+<filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+<feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+</filter>
+</defs>
+<g class="term-window">
+<rect x="2" y="2" width="796" height="306" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#shadow)"/>
+<path d="M 2.75,10 Q 2.75,2.75 10,2.75 L 790,2.75 Q 797.25,2.75 797.25,10 L 797.25,36 L 2.75,36 Z" fill="#21262d"/>
+<line x1="2" y1="36" x2="798" y2="36" stroke="#30363d" stroke-width="1"/>
+<circle cx="16" cy="19" r="5.5" fill="#ff5f56" />
+<circle cx="32" cy="19" r="5.5" fill="#ffbd2e" />
+<circle cx="48" cy="19" r="5.5" fill="#27c93f" />
+<text x="400.0" y="23" text-anchor="middle" class="term-title">cat skills.config.json</text>
+<g transform="translate(0, 36)">
+<g class="skill-box sb-0" transform="translate(20, 15)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#58a6ff"># Languages</text><g><rect x="12" y="28" width="61.0" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">Python</text><rect x="81.0" y="28" width="91.0" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="89.0" y="43" class="tag-pill">TypeScript</text><rect x="180.0" y="28" width="91.0" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="188.0" y="43" class="tag-pill">JavaScript</text><rect x="279.0" y="28" width="38.5" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="287.0" y="43" class="tag-pill">C++</text></g></g>
+<g class="skill-box sb-1" transform="translate(410, 15)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#bc8cff"># Backend Stack</text><g><rect x="12" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">FastAPI</text><rect x="88.5" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="96.5" y="43" class="tag-pill">Node.js</text><rect x="165.0" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="173.0" y="43" class="tag-pill">Express</text><rect x="241.5" y="28" width="61.0" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="249.5" y="43" class="tag-pill">Django</text></g></g>
+<g class="skill-box sb-2" transform="translate(20, 87)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#3fb950"># Frontend Stack</text><g><rect x="12" y="28" width="53.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">React</text><rect x="73.5" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="81.5" y="43" class="tag-pill">Next.js</text><rect x="150.0" y="28" width="106.0" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="158.0" y="43" class="tag-pill">Tailwind CSS</text><rect x="264.0" y="28" width="53.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="272.0" y="43" class="tag-pill">Redux</text></g></g>
+<g class="skill-box sb-3" transform="translate(410, 87)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#d29922"># Database &amp; Cache</text><g><rect x="12" y="28" width="91.0" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">PostgreSQL</text><rect x="111.0" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-opacity="0.6" stroke-width="1"/><text x="119.0" y="43" class="tag-pill">MongoDB</text><rect x="187.5" y="28" width="53.5" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-opacity="0.6" stroke-width="1"/><text x="195.5" y="43" class="tag-pill">Redis</text><rect x="249.0" y="28" width="61.0" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-opacity="0.6" stroke-width="1"/><text x="257.0" y="43" class="tag-pill">SQLite</text></g></g>
+<g class="skill-box sb-4" transform="translate(20, 159)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#58a6ff"># Cloud &amp; Infrastructure</text><g><rect x="12" y="28" width="38.5" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">AWS</text><rect x="58.5" y="28" width="61.0" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="66.5" y="43" class="tag-pill">Docker</text><rect x="127.5" y="28" width="61.0" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="135.5" y="43" class="tag-pill">Vercel</text><rect x="196.5" y="28" width="106.0" height="22" rx="4" fill="#0d1117" stroke="#58a6ff" stroke-opacity="0.6" stroke-width="1"/><text x="204.5" y="43" class="tag-pill">Linux Server</text></g></g>
+<g class="skill-box sb-5" transform="translate(410, 159)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#bc8cff"># DevOps &amp; CI/CD</text><g><rect x="12" y="28" width="38.5" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">Git</text><rect x="58.5" y="28" width="121.0" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="66.5" y="43" class="tag-pill">GitHub Actions</text><rect x="187.5" y="28" width="61.0" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="195.5" y="43" class="tag-pill">Docker</text><rect x="256.5" y="28" width="53.5" height="22" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-opacity="0.6" stroke-width="1"/><text x="264.5" y="43" class="tag-pill">CI/CD</text></g></g>
+<g class="skill-box sb-6" transform="translate(20, 231)"><rect x="0" y="0" width="370" height="60" rx="6" fill="#21262d" stroke="#30363d" stroke-width="1"/><text x="12" y="18" class="cat-title" fill="#3fb950"># Tools &amp; Utilities</text><g><rect x="12" y="28" width="38.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="20" y="43" class="tag-pill">Git</text><rect x="58.5" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="66.5" y="43" class="tag-pill">VS Code</text><rect x="135.0" y="28" width="68.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="143.0" y="43" class="tag-pill">Postman</text><rect x="211.5" y="28" width="53.5" height="22" rx="4" fill="#0d1117" stroke="#3fb950" stroke-opacity="0.6" stroke-width="1"/><text x="219.5" y="43" class="tag-pill">Figma</text></g></g>
+</g>
+</g>
+</svg>

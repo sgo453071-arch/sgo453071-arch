@@ -1,0 +1,50 @@
+[
+  {
+    "id": "disha-for-india",
+    "output_file": "project-disha.svg",
+    "title": "DISHA FOR INDIA",
+    "subtitle": "National Career Guidance & Placement Portal",
+    "description": "Comprehensive career counseling, placement drive management, and skill roadmap platform built for students across India.",
+    "tech_stack": ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Prisma"],
+    "status": "ACTIVE",
+    "highlights": [
+      "Role-based authentication & analytics dashboard",
+      "Automated job matching & student directory table",
+      "Real-time notifications & drive status tracking"
+    ],
+    "github_url": "https://github.com/sgo453071-arch",
+    "demo_url": "https://disha-india.example.com"
+  },
+  {
+    "id": "future-ai-projects",
+    "output_file": "project-ai.svg",
+    "title": "Future AI Projects",
+    "subtitle": "Autonomous Multi-Agent Orchestration & Code Engine",
+    "description": "Cutting-edge AI research lab developing autonomous coding subagents, RAG knowledge graph tools, and SVG animation synthesis.",
+    "tech_stack": ["Python", "FastAPI", "PyTorch", "LangChain", "OpenCV", "Docker"],
+    "status": "IN DEVELOPMENT",
+    "highlights": [
+      "Multi-agent task decomposition & tool calling",
+      "Self-correcting code generation & unit testing",
+      "Real-time vector memory & doc scraping engine"
+    ],
+    "github_url": "https://github.com/sgo453071-arch",
+    "demo_url": "https://ai.shourya.dev"
+  },
+  {
+    "id": "personal-portfolio",
+    "output_file": "project-portfolio.svg",
+    "title": "Developer Portfolio & Terminal Engine",
+    "subtitle": "Custom SVG Profile & Interactive CLI Portfolio",
+    "description": "Engineered static-site generator producing animated terminal GitHub profile graphics, ASCII art, and interactive dark-mode components.",
+    "tech_stack": ["Python", "SVG", "GitHub Actions", "BeautifulSoup4", "Pillow"],
+    "status": "MAINTAINED",
+    "highlights": [
+      "Zero 3rd-party widget dependencies",
+      "Dynamic GitHub contribution graph scraper",
+      "Multi-theme CSS keyframe animation pipeline"
+    ],
+    "github_url": "https://github.com/sgo453071-arch",
+    "demo_url": "https://shourya.dev"
+  }
+]

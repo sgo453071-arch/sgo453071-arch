@@ -1,0 +1,24 @@
+{
+  "name": "Dracula",
+  "background": "#282a36",
+  "card_bg": "#44475a",
+  "header_bg": "#343746",
+  "border": "#6272a4",
+  "text_main": "#f8f8f2",
+  "text_muted": "#6272a4",
+  "accent": "#ff79c6",
+  "accent_secondary": "#bd93f9",
+  "success": "#50fa7b",
+  "warning": "#f1fa8c",
+  "prompt_user": "#ff79c6",
+  "prompt_host": "#50fa7b",
+  "prompt_path": "#8be9fd",
+  "font_family": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+  "heatmap_levels": [
+    "#44475a",
+    "#383a59",
+    "#6272a4",
+    "#bd93f9",
+    "#ff79c6"
+  ]
+}

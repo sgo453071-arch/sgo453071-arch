@@ -1,0 +1,24 @@
+{
+  "name": "Nord",
+  "background": "#2e3440",
+  "card_bg": "#3b4252",
+  "header_bg": "#434c5e",
+  "border": "#4c566a",
+  "text_main": "#eceff4",
+  "text_muted": "#d8dee9",
+  "accent": "#88c0d0",
+  "accent_secondary": "#81a1c1",
+  "success": "#a3be8c",
+  "warning": "#ebcb8b",
+  "prompt_user": "#88c0d0",
+  "prompt_host": "#a3be8c",
+  "prompt_path": "#b48ead",
+  "font_family": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+  "heatmap_levels": [
+    "#3b4252",
+    "#434c5e",
+    "#4c566a",
+    "#81a1c1",
+    "#88c0d0"
+  ]
+}

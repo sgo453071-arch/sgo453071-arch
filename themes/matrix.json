@@ -1,0 +1,24 @@
+{
+  "name": "Matrix",
+  "background": "#050a05",
+  "card_bg": "#0d1f0d",
+  "header_bg": "#122b12",
+  "border": "#00ff41",
+  "text_main": "#00ff41",
+  "text_muted": "#008f11",
+  "accent": "#00ff41",
+  "accent_secondary": "#008f11",
+  "success": "#00ff41",
+  "warning": "#a3ff00",
+  "prompt_user": "#00ff41",
+  "prompt_host": "#008f11",
+  "prompt_path": "#a3ff00",
+  "font_family": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+  "heatmap_levels": [
+    "#0d1f0d",
+    "#003b00",
+    "#008f11",
+    "#00ff41",
+    "#50ff50"
+  ]
+}

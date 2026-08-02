@@ -1,0 +1,35 @@
+{
+  "name": "Shourya",
+  "username": "sgo453071-arch",
+  "tagline": "Full Stack Developer & Systems Engineer",
+  "bio": "Building scalable backend systems, elegant frontend UI/UX, and AI applications.",
+  "roles": [
+    "Software Engineer",
+    "Full Stack Developer",
+    "Systems Architect",
+    "Open Source Contributor"
+  ],
+  "learning": "Distributed Systems & Machine Learning",
+  "current_focus": "Building AI-powered developer tools and high-performance APIs",
+  "editor": "VS Code / Neovim",
+  "os": "Linux / Windows (WSL2)",
+  "location": "India",
+  "stacks": {
+    "languages": ["Python", "TypeScript", "JavaScript", "C++", "SQL", "HTML/CSS"],
+    "backend": ["FastAPI", "Node.js", "Express", "Django", "REST APIs", "GraphQL"],
+    "frontend": ["React", "Next.js", "Tailwind CSS", "Redux", "HTML5", "CSS3"],
+    "database": ["PostgreSQL", "MongoDB", "Redis", "SQLite", "Prisma"],
+    "cloud": ["AWS", "Docker", "Vercel", "Linux Server", "Nginx"],
+    "devops": ["Git", "GitHub Actions", "Docker", "CI/CD", "Bash"],
+    "tools": ["Git", "VS Code", "Postman", "Figma", "Linux CLI"]
+  },
+  "socials": {
+    "github": "https://github.com/sgo453071-arch",
+    "linkedin": "https://www.linkedin.com/in/sg19o/",
+    "twitter": "https://twitter.com/shourya_dev",
+    "portfolio": "https://shourya.dev",
+    "email": "shourya@example.com",
+    "leetcode": "https://leetcode.com/u/Sg19o/",
+    "hackerrank": "https://hackerrank.com/shourya"
+  }
+}

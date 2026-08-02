@@ -1,0 +1,24 @@
+{
+  "name": "Catppuccin Mocha",
+  "background": "#1e1e2e",
+  "card_bg": "#181825",
+  "header_bg": "#313244",
+  "border": "#45475a",
+  "text_main": "#cdd6f4",
+  "text_muted": "#a6adc8",
+  "accent": "#cba6f7",
+  "accent_secondary": "#89b4fa",
+  "success": "#a6e3a1",
+  "warning": "#f9e2af",
+  "prompt_user": "#cba6f7",
+  "prompt_host": "#a6e3a1",
+  "prompt_path": "#89b4fa",
+  "font_family": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+  "heatmap_levels": [
+    "#181825",
+    "#313244",
+    "#45475a",
+    "#89b4fa",
+    "#cba6f7"
+  ]
+}

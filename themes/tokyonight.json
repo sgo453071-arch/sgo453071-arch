@@ -1,0 +1,24 @@
+{
+  "name": "Tokyo Night",
+  "background": "#1a1b26",
+  "card_bg": "#24283b",
+  "header_bg": "#1f2335",
+  "border": "#414868",
+  "text_main": "#c0caf5",
+  "text_muted": "#565f89",
+  "accent": "#7aa2f7",
+  "accent_secondary": "#bb9af7",
+  "success": "#9ece6a",
+  "warning": "#e0af68",
+  "prompt_user": "#7aa2f7",
+  "prompt_host": "#9ece6a",
+  "prompt_path": "#bb9af7",
+  "font_family": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+  "heatmap_levels": [
+    "#24283b",
+    "#1f2335",
+    "#414868",
+    "#7aa2f7",
+    "#bb9af7"
+  ]
+}
