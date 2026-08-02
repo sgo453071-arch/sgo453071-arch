@@ -37,6 +37,12 @@ fill: #58a6ff;
 font-weight: bold;
 fill: #c9d1d9;
 }
+.nf-link {
+cursor: pointer;
+}
+.nf-link:hover {
+text-decoration: underline;
+}
 .nfr-0 { animation-delay: 0ms; }
 .nfr-1 { animation-delay: 40ms; }
 .nfr-2 { animation-delay: 80ms; }
@@ -77,10 +83,10 @@ fill: #c9d1d9;
 <g class="nf-row nfr-7"><text x="16" y="172" class="nf-txt"><tspan class="nf-k">Database</tspan><tspan x="90" fill="#8b949e">:</tspan><tspan x="102" fill="#3fb950">PostgreSQL, MongoDB, Redis</tspan></text></g>
 <g class="nf-row nfr-8"><text x="16" y="190" class="nf-txt"><tspan class="nf-k">Cloud</tspan><tspan x="90" fill="#8b949e">:</tspan><tspan x="102" fill="#d29922">AWS, Docker, Vercel</tspan></text></g>
 <g class="nf-row nfr-9"><text x="16" y="222" class="nf-txt nf-section">> Profiles &amp; Contact</text></g>
-<g class="nf-row nfr-10"><text x="16" y="242" class="nf-txt" fill="#c9d1d9">• LinkedIn : <tspan fill="#58a6ff">linkedin.com/in/sg19o</tspan></text></g>
-<g class="nf-row nfr-11"><text x="16" y="260" class="nf-txt" fill="#c9d1d9">• LeetCode : <tspan fill="#d29922">leetcode.com/u/Sg19o</tspan></text></g>
-<g class="nf-row nfr-12"><text x="16" y="278" class="nf-txt" fill="#c9d1d9">• GitHub   : <tspan fill="#3fb950">github.com/sgo453071-arch</tspan></text></g>
-<g class="nf-row nfr-13"><text x="16" y="296" class="nf-txt" fill="#c9d1d9">• Email    : <tspan fill="#bc8cff">sgo453071@gmail.com</tspan></text></g>
+<g class="nf-row nfr-10"><text x="16" y="242" class="nf-txt" fill="#c9d1d9">• LinkedIn : <a href="https://www.linkedin.com/in/sg19o/" target="_blank" class="nf-link"><tspan fill="#58a6ff">linkedin.com/in/sg19o</tspan></a></text></g>
+<g class="nf-row nfr-11"><text x="16" y="260" class="nf-txt" fill="#c9d1d9">• LeetCode : <a href="https://leetcode.com/u/Sg19o/" target="_blank" class="nf-link"><tspan fill="#d29922">leetcode.com/u/Sg19o</tspan></a></text></g>
+<g class="nf-row nfr-12"><text x="16" y="278" class="nf-txt" fill="#c9d1d9">• GitHub   : <a href="https://github.com/sgo453071-arch" target="_blank" class="nf-link"><tspan fill="#3fb950">github.com/sgo453071-arch</tspan></a></text></g>
+<g class="nf-row nfr-13"><text x="16" y="296" class="nf-txt" fill="#c9d1d9">• Email    : <a href="mailto:sgo453071@gmail.com" target="_blank" class="nf-link"><tspan fill="#bc8cff">sgo453071@gmail.com</tspan></a></text></g>
 <g class="nf-row nfr-14"><rect x="16" y="330" width="20" height="10" rx="2" fill="#58a6ff"/><rect x="40" y="330" width="20" height="10" rx="2" fill="#bc8cff"/><rect x="64" y="330" width="20" height="10" rx="2" fill="#3fb950"/><rect x="88" y="330" width="20" height="10" rx="2" fill="#d29922"/><rect x="112" y="330" width="20" height="10" rx="2" fill="#ff5f56"/><rect x="136" y="330" width="20" height="10" rx="2" fill="#ffbd2e"/><rect x="160" y="330" width="20" height="10" rx="2" fill="#27c93f"/><rect x="184" y="330" width="20" height="10" rx="2" fill="#c9d1d9"/></g>
 </g>
 </g>

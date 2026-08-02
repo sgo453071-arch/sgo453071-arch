@@ -9,7 +9,7 @@ from .logger import get_logger
 
 logger = get_logger("image_utils")
 
-# High-contrast character ramp optimized for dark terminal background
+# Fine-grained character ramp for dark terminal background (0=space/dark, 255=bright)
 ASCII_RAMP = "   ..::-=+*#%@"
 
 
@@ -27,11 +27,11 @@ def ensure_profile_image() -> Path:
 
 def convert_image_to_ascii(
     image_path: Path,
-    cols: int = 62,
+    cols: int = 64,
     aspect_ratio: float = 0.48,
-    contrast_factor: float = 2.2,
+    contrast_factor: float = 2.4,
 ) -> List[str]:
-    """Convert image file into ultra-sharp high-contrast ASCII portrait rows.
+    """Convert image file into ultra-sharp high-contrast ASCII portrait rows with clean background.
 
     Args:
         image_path: Path to source image.
@@ -50,19 +50,19 @@ def convert_image_to_ascii(
 
         with Image.open(image_path) as img:
             gray = img.convert("L")
-            enhanced = ImageOps.autocontrast(gray, cutoff=3)
+            enhanced = ImageOps.autocontrast(gray, cutoff=5)
 
-            # Sharpen edges for facial features
+            # Edge sharpening for facial features
             sharpened = enhanced.filter(ImageFilter.SHARPEN)
 
             # High contrast boost
             enhancer = ImageEnhance.Contrast(sharpened)
             boosted = enhancer.enhance(contrast_factor)
 
-            # Resize to ASCII grid
+            # Resize to 64-column ASCII grid
             w, h = boosted.size
             rows = int((h / w) * cols * aspect_ratio)
-            rows = max(28, min(rows, 38))
+            rows = max(30, min(rows, 40))
 
             resized = boosted.resize((cols, rows), Image.Resampling.LANCZOS)
             pixels = list(resized.getdata())
@@ -73,8 +73,8 @@ def convert_image_to_ascii(
                 line = []
                 for x in range(cols):
                     pixel_val = pixels[y * cols + x]
-                    # Background noise suppression threshold (< 42 becomes pure space)
-                    if pixel_val < 42:
+                    # Thresholding: pixels under 55 become 100% clean spaces (zero background dots)
+                    if pixel_val < 55:
                         line.append(" ")
                     else:
                         char_idx = int((pixel_val / 255.0) * (ramp_len - 1))

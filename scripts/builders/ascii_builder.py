@@ -14,9 +14,9 @@ logger = get_logger("ascii_builder")
 def build_ascii_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "ascii-profile.svg",
-    cols: int = 62,
+    cols: int = 64,
 ) -> Path:
-    """Generate high-resolution animated monochrome ASCII portrait SVG.
+    """Generate high-resolution ultra-sharp animated monochrome ASCII portrait SVG.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -39,15 +39,15 @@ def build_ascii_svg(
     text_main = theme.get("text_main", "#c9d1d9")
     text_muted = theme.get("text_muted", "#8b949e")
 
-    # Generate high-resolution ASCII lines
+    # Generate 64-column high-resolution ASCII lines
     ascii_lines = convert_image_to_ascii(prepped_image, cols=cols, aspect_ratio=0.48)
     num_rows = len(ascii_lines)
 
     width = 390
     height = 410
 
-    row_height = 9.8
-    font_size = 8.4
+    row_height = 9.4
+    font_size = 8.0
 
     css_rules = [
         f"""
@@ -77,7 +77,7 @@ def build_ascii_svg(
     ]
 
     for idx in range(num_rows):
-        delay = idx * 15
+        delay = idx * 12
         css_rules.append(f".ar-{idx} {{ animation-delay: {delay}ms; }}")
 
     custom_css = "\n".join(css_rules)

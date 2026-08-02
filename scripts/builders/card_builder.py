@@ -14,7 +14,7 @@ def build_info_card_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "info-card.svg",
 ) -> Path:
-    """Generate Neofetch info card SVG matching reference design layout using verified real data.
+    """Generate Neofetch info card SVG with interactive clickable links.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -31,6 +31,7 @@ def build_info_card_svg(
     theme = config_mgr.theme
 
     username = config_mgr.get_username()
+    socials = prof.get("socials", {})
 
     text_main = theme.get("text_main", "#c9d1d9")
     text_muted = theme.get("text_muted", "#8b949e")
@@ -48,7 +49,10 @@ def build_info_card_svg(
     db_str = ", ".join(stacks.get("database", ["PostgreSQL", "MongoDB", "Redis"])[:3])
     cloud_str = ", ".join(stacks.get("cloud", ["AWS", "Docker", "Vercel"])[:3])
 
-    socials = prof.get("socials", {})
+    linkedin_url = socials.get("linkedin", "https://www.linkedin.com/in/sg19o/")
+    leetcode_url = socials.get("leetcode", "https://leetcode.com/u/Sg19o/")
+    github_url = socials.get("github", f"https://github.com/{username}")
+    email_url = f"mailto:{socials.get('email', 'sgo453071@gmail.com')}"
 
     css_rules = [
         f"""
@@ -77,6 +81,12 @@ def build_info_card_svg(
         .nf-k {{
           font-weight: bold;
           fill: {text_main};
+        }}
+        .nf-link {{
+          cursor: pointer;
+        }}
+        .nf-link:hover {{
+          text-decoration: underline;
         }}
         """
     ]
@@ -148,22 +158,22 @@ def build_info_card_svg(
     )
     inner_lines.append(
         f'<g class="nf-row nfr-10">'
-        f'<text x="16" y="242" class="nf-txt" fill="{text_main}">• LinkedIn : <tspan fill="{accent}">linkedin.com/in/sg19o</tspan></text>'
+        f'<text x="16" y="242" class="nf-txt" fill="{text_main}">• LinkedIn : <a href="{linkedin_url}" target="_blank" class="nf-link"><tspan fill="{accent}">linkedin.com/in/sg19o</tspan></a></text>'
         f'</g>'
     )
     inner_lines.append(
         f'<g class="nf-row nfr-11">'
-        f'<text x="16" y="260" class="nf-txt" fill="{text_main}">• LeetCode : <tspan fill="{warning}">leetcode.com/u/Sg19o</tspan></text>'
+        f'<text x="16" y="260" class="nf-txt" fill="{text_main}">• LeetCode : <a href="{leetcode_url}" target="_blank" class="nf-link"><tspan fill="{warning}">leetcode.com/u/Sg19o</tspan></a></text>'
         f'</g>'
     )
     inner_lines.append(
         f'<g class="nf-row nfr-12">'
-        f'<text x="16" y="278" class="nf-txt" fill="{text_main}">• GitHub   : <tspan fill="{success}">github.com/{escape_xml(username)}</tspan></text>'
+        f'<text x="16" y="278" class="nf-txt" fill="{text_main}">• GitHub   : <a href="{github_url}" target="_blank" class="nf-link"><tspan fill="{success}">github.com/{escape_xml(username)}</tspan></a></text>'
         f'</g>'
     )
     inner_lines.append(
         f'<g class="nf-row nfr-13">'
-        f'<text x="16" y="296" class="nf-txt" fill="{text_main}">• Email    : <tspan fill="{accent_sec}">sgo453071@gmail.com</tspan></text>'
+        f'<text x="16" y="296" class="nf-txt" fill="{text_main}">• Email    : <a href="{email_url}" target="_blank" class="nf-link"><tspan fill="{accent_sec}">sgo453071@gmail.com</tspan></a></text>'
         f'</g>'
     )
 
