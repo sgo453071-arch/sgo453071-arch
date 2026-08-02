@@ -57,7 +57,6 @@ def validate_output_svgs() -> bool:
     gen_dir = root / "assets" / "generated"
 
     expected_svgs = [
-        "terminal-banner.svg",
         "ascii-profile.svg",
         "info-card.svg",
         "contribution-graph.svg",

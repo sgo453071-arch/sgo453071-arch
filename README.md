@@ -1,10 +1,5 @@
 <div align="center">
 
-<!-- Terminal Header Banner -->
-<img src="assets/generated/terminal-banner.svg" alt="Terminal Header Banner" width="800"/>
-
-<br/><br/>
-
 <!-- SECTION 1: CONTRIBUTIONS -->
 <h3><code>sgo453071-arch@github ~ $ ./contributions.sh</code></h3>
 

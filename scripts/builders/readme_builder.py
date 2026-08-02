@@ -10,7 +10,7 @@ logger = get_logger("readme_builder")
 
 
 def build_readme_file(config_mgr: "ConfigManager") -> Path:
-    """Generate production-ready centered terminal README.md document using verified real details.
+    """Generate production-ready centered terminal README.md document.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -26,11 +26,6 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
     socials = prof.get("socials", {})
 
     readme_content = f"""<div align="center">
-
-<!-- Terminal Header Banner -->
-<img src="assets/generated/terminal-banner.svg" alt="Terminal Header Banner" width="800"/>
-
-<br/><br/>
 
 <!-- SECTION 1: CONTRIBUTIONS -->
 <h3><code>{username}@github ~ $ ./contributions.sh</code></h3>
