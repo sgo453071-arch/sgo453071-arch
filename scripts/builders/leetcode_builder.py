@@ -13,7 +13,7 @@ logger = get_logger("leetcode_builder")
 
 def build_leetcode_svg(
     config_mgr: "ConfigManager",
-    output_filename: str = "leetcode-stats.svg",
+    output_filename: str = "leetcode-heatmap.svg",
 ) -> Path:
     """Generate animated 365-day LeetCode submission calendar heatmap SVG card.
 

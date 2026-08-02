@@ -60,7 +60,7 @@ def validate_output_svgs() -> bool:
         "ascii-profile.svg",
         "info-card.svg",
         "contribution-graph.svg",
-        "leetcode-stats.svg",
+        "leetcode-heatmap.svg",
         "skills.svg",
         "project-disha.svg",
         "project-ai.svg",

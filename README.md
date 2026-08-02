@@ -2,7 +2,7 @@
 
 <!-- SECTION 1: LEETCODE CALENDAR HEATMAP (AT TOP) -->
 <a href="https://leetcode.com/u/Sg19o/" target="_blank">
-  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Submission Heatmap" width="800"/>
+  <img src="assets/generated/leetcode-heatmap.svg" alt="Animated LeetCode Submission Heatmap" width="800"/>
 </a>
 
 <br/><br/>

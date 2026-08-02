@@ -37,7 +37,7 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
 
 <!-- SECTION 1: LEETCODE CALENDAR HEATMAP (AT TOP) -->
 <a href="{leetcode_url}" target="_blank">
-  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Submission Heatmap" width="800"/>
+  <img src="assets/generated/leetcode-heatmap.svg" alt="Animated LeetCode Submission Heatmap" width="800"/>
 </a>
 
 <br/><br/>
