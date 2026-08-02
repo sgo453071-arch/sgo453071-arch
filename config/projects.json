@@ -12,8 +12,7 @@
       "Automated job matching & student directory table",
       "Real-time notifications & drive status tracking"
     ],
-    "github_url": "https://github.com/sgo453071-arch",
-    "demo_url": "https://disha-india.example.com"
+    "github_url": "https://github.com/sgo453071-arch"
   },
   {
     "id": "future-ai-projects",
@@ -28,14 +27,13 @@
       "Self-correcting code generation & unit testing",
       "Real-time vector memory & doc scraping engine"
     ],
-    "github_url": "https://github.com/sgo453071-arch",
-    "demo_url": "https://ai.shourya.dev"
+    "github_url": "https://github.com/sgo453071-arch"
   },
   {
     "id": "personal-portfolio",
     "output_file": "project-portfolio.svg",
     "title": "Developer Portfolio & Terminal Engine",
-    "subtitle": "Custom SVG Profile & Interactive CLI Portfolio",
+    "subtitle": "Custom SVG Profile & Interactive CLI Engine",
     "description": "Engineered static-site generator producing animated terminal GitHub profile graphics, ASCII art, and interactive dark-mode components.",
     "tech_stack": ["Python", "SVG", "GitHub Actions", "BeautifulSoup4", "Pillow"],
     "status": "MAINTAINED",
@@ -44,7 +42,6 @@
       "Dynamic GitHub contribution graph scraper",
       "Multi-theme CSS keyframe animation pipeline"
     ],
-    "github_url": "https://github.com/sgo453071-arch",
-    "demo_url": "https://shourya.dev"
+    "github_url": "https://github.com/sgo453071-arch"
   }
 ]

@@ -57,7 +57,7 @@ fill: #bc8cff;
 <rect x="270" y="-12" width="70" height="18" rx="4" fill="#0d1117" stroke="#bc8cff" stroke-width="1"/>
 <text x="305" y="0" text-anchor="middle" class="p-status">MAINTAINED</text>
 </g>
-<text x="20" y="38" class="p-sub">Custom SVG Profile &amp; Interactive CLI Portfolio</text>
+<text x="20" y="38" class="p-sub">Custom SVG Profile &amp; Interactive CLI Engine</text>
 <g>
 <text x="20" y="50" class="p-desc">Engineered static-site generator producing animated</text><text x="20" y="66" class="p-desc">terminal GitHub profile graphics, ASCII art, and</text>
 </g>

@@ -14,7 +14,7 @@ def build_info_card_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "info-card.svg",
 ) -> Path:
-    """Generate Neofetch info card SVG matching reference design layout.
+    """Generate Neofetch info card SVG matching reference design layout using verified real data.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -31,7 +31,6 @@ def build_info_card_svg(
     theme = config_mgr.theme
 
     username = config_mgr.get_username()
-    name = config_mgr.get_name()
 
     text_main = theme.get("text_main", "#c9d1d9")
     text_muted = theme.get("text_muted", "#8b949e")
@@ -78,9 +77,6 @@ def build_info_card_svg(
         .nf-k {{
           font-weight: bold;
           fill: {text_main};
-        }}
-        .nf-v {{
-          fill: {text_muted};
         }}
         """
     ]
@@ -144,10 +140,10 @@ def build_info_card_svg(
         f'</g>'
     )
 
-    # Highlights & Links Section Header
+    # Profiles Section Header
     inner_lines.append(
         f'<g class="nf-row nfr-9">'
-        f'<text x="16" y="222" class="nf-txt nf-section">> Profiles &amp; Highlights</text>'
+        f'<text x="16" y="222" class="nf-txt nf-section">> Profiles &amp; Contact</text>'
         f'</g>'
     )
     inner_lines.append(
@@ -167,7 +163,7 @@ def build_info_card_svg(
     )
     inner_lines.append(
         f'<g class="nf-row nfr-13">'
-        f'<text x="16" y="296" class="nf-txt" fill="{text_main}">• Projects : <tspan fill="{accent_sec}">DISHA FOR INDIA, Future AI</tspan></text>'
+        f'<text x="16" y="296" class="nf-txt" fill="{text_main}">• Email    : <tspan fill="{accent_sec}">sgo453071@gmail.com</tspan></text>'
         f'</g>'
     )
 
