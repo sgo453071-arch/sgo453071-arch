@@ -1,4 +1,4 @@
-"""Image processing and multi-tone ASCII conversion utilities."""
+"""Image processing and dot matrix halftone grid generator."""
 
 import os
 from pathlib import Path
@@ -8,9 +8,6 @@ from .file_utils import ensure_dir, get_project_root
 from .logger import get_logger
 
 logger = get_logger("image_utils")
-
-# Multi-tone character ramp
-ASCII_RAMP = "   ..::-=+*#%@"
 
 
 def ensure_profile_image() -> Path:
@@ -25,20 +22,20 @@ def ensure_profile_image() -> Path:
     return profile_path
 
 
-def convert_image_to_ascii_grid(
+def convert_image_to_dot_matrix(
     image_path: Path,
-    cols: int = 70,
-    aspect_ratio: float = 0.48,
-) -> List[List[Tuple[str, int]]]:
-    """Convert prepped image into structured (character, intensity_val) grid for multi-color rendering.
+    cols: int = 54,
+    rows: int = 48,
+) -> List[Tuple[float, float, float, int]]:
+    """Convert photo into precision (x, y, radius, brightness) dot matrix halftone grid.
 
     Args:
-        image_path: Path to source image.
-        cols: Number of ASCII characters horizontally.
-        aspect_ratio: Vertical font correction factor (~0.48 for standard monospace).
+        image_path: Path to source photo.
+        cols: Horizontal dot grid resolution.
+        rows: Vertical dot grid resolution.
 
     Returns:
-        2D Grid of (character, pixel_brightness) tuples.
+        List of (x_pos, y_pos, radius, brightness) dot tuples.
     """
     if not image_path.exists():
         image_path = ensure_profile_image()
@@ -47,55 +44,42 @@ def convert_image_to_ascii_grid(
         from PIL import Image, ImageEnhance, ImageFilter, ImageOps  # type: ignore
 
         with Image.open(image_path) as img:
-            gray = img.convert("L")
+            rgb = img.convert("RGB")
+            w, h = rgb.size
+
+            # Crop upper torso & head cleanly (5% to 85% bounds)
+            cropped = rgb.crop((int(w * 0.05), int(h * 0.02), int(w * 0.95), int(h * 0.85)))
+            gray = cropped.convert("L")
+
+            # High contrast and edge sharpening
             enhanced = ImageOps.autocontrast(gray, cutoff=2)
             sharpened = enhanced.filter(ImageFilter.SHARPEN)
 
             enhancer = ImageEnhance.Contrast(sharpened)
             boosted = enhancer.enhance(1.8)
 
-            w, h = boosted.size
-            rows = int((h / w) * cols * aspect_ratio)
-            rows = max(32, min(rows, 42))
-
             resized = boosted.resize((cols, rows), Image.Resampling.LANCZOS)
             pixels = list(resized.getdata())
 
-            ramp_len = len(ASCII_RAMP)
-            grid = []
+            # Layout bounds inside 360x340 portrait box
+            box_w = 360
+            box_h = 340
+            dx = box_w / cols
+            dy = box_h / rows
+
+            dots = []
             for y in range(rows):
-                row_cells = []
                 for x in range(cols):
-                    pixel_val = pixels[y * cols + x]
-                    if pixel_val < 16:
-                        row_cells.append((" ", 0))
-                    else:
-                        char_idx = int((pixel_val / 255.0) * (ramp_len - 1))
-                        row_cells.append((ASCII_RAMP[char_idx], pixel_val))
-                grid.append(row_cells)
+                    brightness = pixels[y * cols + x]
+                    # Background noise cutoff (< 22) -> no dot
+                    if brightness >= 22:
+                        cx = 15 + (x + 0.5) * dx
+                        cy = 12 + (y + 0.5) * dy
+                        # Dynamic dot radius proportional to brightness (0.8px to 3.2px)
+                        r = 0.8 + (brightness / 255.0) * 2.4
+                        dots.append((cx, cy, r, brightness))
 
-            return grid
+            return dots
     except Exception as err:
-        logger.error(f"Error converting image to ASCII grid: {err}")
-        return [[(" ", 0)]]
-
-
-def convert_image_to_ascii(
-    image_path: Path,
-    cols: int = 70,
-    aspect_ratio: float = 0.48,
-    contrast_factor: float = 1.9,
-) -> List[str]:
-    """Fallback plain text ASCII converter.
-
-    Args:
-        image_path: Path to source image.
-        cols: Number of ASCII characters horizontally.
-        aspect_ratio: Vertical font correction factor.
-        contrast_factor: Contrast multiplier.
-
-    Returns:
-        List of ASCII strings.
-    """
-    grid = convert_image_to_ascii_grid(image_path, cols=cols, aspect_ratio=aspect_ratio)
-    return ["".join(cell[0] for cell in row) for row in grid]
+        logger.error(f"Error generating dot matrix grid: {err}")
+        return []

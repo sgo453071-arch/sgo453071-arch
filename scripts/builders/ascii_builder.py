@@ -1,10 +1,10 @@
-"""Stylized Terminal Matrix Vector Portrait SVG Builder."""
+"""Pure SVG Dot Matrix Halftone Portrait SVG Builder."""
 
 from pathlib import Path
 from typing import TYPE_CHECKING, List
 
-from processors.photo_processor import get_profile_photo_base64, process_profile_photo
 from utils.file_utils import ensure_dir, get_project_root, write_text
+from utils.image_utils import convert_image_to_dot_matrix, ensure_profile_image
 from utils.logger import get_logger
 from utils.svg_utils import wrap_in_terminal_window
 
@@ -16,9 +16,9 @@ logger = get_logger("ascii_builder")
 
 def build_ascii_svg(
     config_mgr: "ConfigManager",
-    output_filename: str = "matrix-portrait.svg",
+    output_filename: str = "dots-portrait.svg",
 ) -> Path:
-    """Generate stylized animated terminal matrix portrait SVG card.
+    """Generate pure animated SVG dot matrix halftone portrait card.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -31,6 +31,10 @@ def build_ascii_svg(
     output_path = root / "assets" / "generated" / output_filename
     ensure_dir(output_path.parent)
 
+    prepped_image = root / "assets" / "source-prepped.png"
+    if not prepped_image.exists():
+        prepped_image = ensure_profile_image()
+
     theme = config_mgr.theme
     accent = theme.get("accent", "#38bdf8")
     text_main = theme.get("text_main", "#c9d1d9")
@@ -40,44 +44,74 @@ def build_ascii_svg(
     width = 390
     height = 410
 
-    # Get stylized base64 image
-    img_b64 = get_profile_photo_base64()
+    # Colors for dot matrix highlights
+    c_high = "#f0f6fc"  # Ice White for face highlights
+    c_mid = "#38bdf8"   # Matrix Cyan for skin & facial features
+    c_low = "#58a6ff"   # Deep Blue for suit coat & shoulders
 
-    css_rules = f"""
-      @keyframes imgFade {{
-        from {{ opacity: 0; transform: scale(0.96); }}
-        to {{ opacity: 1; transform: scale(1); }}
-      }}
-      @keyframes blinkCursor {{
-        0%, 49% {{ opacity: 1; }}
-        50%, 100% {{ opacity: 0; }}
-      }}
-      .portrait-img {{
-        animation: imgFade 0.6s ease-out forwards;
-        transform-origin: center;
-      }}
-      .portrait-hud {{
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 10px;
-        fill: {accent};
-        letter-spacing: 0.5px;
-      }}
-      .portrait-footer {{
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 10.5px;
-        fill: {text_muted};
-      }}
-      .portrait-cursor {{
-        fill: {text_main};
-        animation: blinkCursor 0.8s infinite;
-      }}
-    """
+    # Generate 54x48 precision dot matrix points
+    dots = convert_image_to_dot_matrix(prepped_image, cols=54, rows=48)
+    num_dots = len(dots)
+
+    css_rules = [
+        f"""
+        @keyframes dotPop {{
+          from {{ opacity: 0; transform: scale(0.2); }}
+          to {{ opacity: 1; transform: scale(1); }}
+        }}
+        .dot-tile {{
+          opacity: 0;
+          animation: dotPop 0.3s ease-out forwards;
+          transform-origin: center;
+        }}
+        .portrait-hud {{
+          font-family: 'JetBrains Mono', 'Fira Code', monospace;
+          font-size: 10px;
+          fill: {accent};
+          letter-spacing: 0.5px;
+        }}
+        .portrait-footer {{
+          font-family: 'JetBrains Mono', 'Fira Code', monospace;
+          font-size: 10.5px;
+          fill: {text_muted};
+        }}
+        .portrait-cursor {{
+          fill: {text_main};
+          animation: dotPop 0.6s infinite alternate;
+        }}
+        """
+    ]
+
+    # Batch animation delays
+    for idx in range(0, num_dots, 15):
+        delay = min(600, int(idx * 0.4))
+        css_rules.append(f".d-group-{idx} {{ animation-delay: {delay}ms; }}")
+
+    custom_css = "\n".join(css_rules)
+
+    circles_svg = []
+    for idx, (cx, cy, r, brightness) in enumerate(dots):
+        if brightness > 165:
+            color = c_high
+        elif brightness > 95:
+            color = c_mid
+        else:
+            color = c_low
+
+        grp = (idx // 15) * 15
+        circles_svg.append(
+            f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.2f}" fill="{color}" class="dot-tile d-group-{grp}"/>'
+        )
 
     inner_content = f"""
       <!-- Inner Terminal Photo Frame -->
       <g transform="translate(15, 12)">
         <rect x="0" y="0" width="360" height="340" rx="8" fill="{bg}" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
-        <image href="{img_b64}" x="0" y="0" width="360" height="340" preserveAspectRatio="xMidYMid slice" class="portrait-img" clip-path="url(#img-clip)"/>
+        
+        <!-- SVG Dot Matrix Halftone Portrait -->
+        <g transform="translate(0, 0)">
+          {"".join(circles_svg)}
+        </g>
         
         <!-- Tech Matrix Corner Brackets -->
         <path d="M 8,20 L 8,8 L 20,8" stroke="{accent}" stroke-width="2" fill="none"/>
@@ -86,15 +120,8 @@ def build_ascii_svg(
         <path d="M 340,332 L 352,332 L 352,320" stroke="{accent}" stroke-width="2" fill="none"/>
 
         <!-- Top Right Tech HUD Label -->
-        <text x="345" y="24" text-anchor="end" class="portrait-hud">[SYS_ID: ARCH_01]</text>
+        <text x="345" y="24" text-anchor="end" class="portrait-hud">[SYS_ID: ARCH_DOTS]</text>
       </g>
-
-      <!-- Clip Path for rounded corners -->
-      <defs>
-        <clipPath id="img-clip">
-          <rect x="0" y="0" width="360" height="340" rx="8"/>
-        </clipPath>
-      </defs>
 
       <!-- Bottom Status Line inside Terminal Window -->
       <text x="16" y="375" class="portrait-footer">[STATUS] 100% OPERATIONAL <tspan class="portrait-cursor">█</tspan></text>
@@ -106,9 +133,9 @@ def build_ascii_svg(
         width=width,
         height=height,
         theme=theme,
-        custom_css=css_rules,
+        custom_css=custom_css,
     )
 
     write_text(output_path, svg_str)
-    logger.info(f"Generated stylized terminal matrix portrait SVG -> {output_path}")
+    logger.info(f"Generated pure SVG dot matrix halftone portrait -> {output_path}")
     return output_path

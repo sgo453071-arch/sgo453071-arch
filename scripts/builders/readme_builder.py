@@ -49,12 +49,12 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
 
 <br/><br/>
 
-<!-- SECTION 3: WHOAMI (TERMINAL MATRIX PORTRAIT + NEOFETCH INFO CARD) -->
+<!-- SECTION 3: WHOAMI (PURE DOT MATRIX HALFTONE PORTRAIT + NEOFETCH INFO CARD) -->
 <table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
   <tr style="border: none;">
     <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="{github_url}">
-        <img src="assets/generated/matrix-portrait.svg" alt="Terminal Matrix Portrait" width="390"/>
+        <img src="assets/generated/dots-portrait.svg" alt="Dot Matrix Halftone Portrait" width="390"/>
       </a>
     </td>
     <td align="center" valign="top" style="border: none; padding: 4px;">
