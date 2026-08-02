@@ -46,7 +46,7 @@ def convert_image_to_ascii(
         image_path = ensure_profile_image()
 
     try:
-        from PIL import Image, ImageEnhance, ImageFilter, ImageOps
+        from PIL import Image, ImageEnhance, ImageFilter, ImageOps  # type: ignore
 
         with Image.open(image_path) as img:
             gray = img.convert("L")

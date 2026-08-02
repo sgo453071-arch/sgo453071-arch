@@ -1,16 +1,19 @@
 """Master README.md Document Builder."""
 
 from pathlib import Path
-from typing import Dict
+from typing import TYPE_CHECKING, Dict
 
 from utils.file_utils import ensure_dir, get_project_root, write_text
 from utils.logger import get_logger
+
+if TYPE_CHECKING:
+    from utils.config import ConfigManager
 
 logger = get_logger("readme_builder")
 
 
 def build_readme_file(config_mgr: "ConfigManager") -> Path:
-    """Generate minimal production-ready centered terminal README.md document with active links.
+    """Generate minimal production-ready centered terminal README.md document.
 
     Args:
         config_mgr: ConfigManager instance.

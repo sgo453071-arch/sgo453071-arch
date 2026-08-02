@@ -1,12 +1,15 @@
 """ASCII Portrait SVG Builder."""
 
 from pathlib import Path
-from typing import List
+from typing import TYPE_CHECKING, List
 
 from utils.file_utils import ensure_dir, get_project_root, write_text
 from utils.image_utils import convert_image_to_ascii, ensure_profile_image
 from utils.logger import get_logger
 from utils.svg_utils import escape_xml, wrap_in_terminal_window
+
+if TYPE_CHECKING:
+    from utils.config import ConfigManager
 
 logger = get_logger("ascii_builder")
 
