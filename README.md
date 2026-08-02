@@ -19,12 +19,7 @@
 
 <br/><br/>
 
-<!-- SECTION 3: SKILLS MATRIX -->
-<img src="assets/generated/skills.svg" alt="Skills Matrix" width="800"/>
-
-<br/><br/>
-
-<!-- SECTION 4: SOCIAL CONNECT & FOOTER -->
+<!-- SECTION 3: SOCIAL CONNECT & FOOTER -->
 <p align="center">
   <a href="https://github.com/sgo453071-arch">
     <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
