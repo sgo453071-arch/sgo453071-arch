@@ -9,7 +9,7 @@ from .logger import get_logger
 
 logger = get_logger("image_utils")
 
-# Fine-grained character ramp for dark terminal background (0=space/dark, 255=bright)
+# Character ramp for dark terminal background
 ASCII_RAMP = "   ..::-=+*#%@"
 
 
@@ -27,16 +27,16 @@ def ensure_profile_image() -> Path:
 
 def convert_image_to_ascii(
     image_path: Path,
-    cols: int = 64,
-    aspect_ratio: float = 0.48,
-    contrast_factor: float = 2.4,
+    cols: int = 60,
+    aspect_ratio: float = 0.50,
+    contrast_factor: float = 1.8,
 ) -> List[str]:
-    """Convert image file into ultra-sharp high-contrast ASCII portrait rows with clean background.
+    """Convert image file into full-body balanced ASCII portrait rows.
 
     Args:
         image_path: Path to source image.
         cols: Number of ASCII characters horizontally.
-        aspect_ratio: Vertical font correction factor (~0.48 for standard monospace).
+        aspect_ratio: Vertical font correction factor (~0.50 for standard monospace).
         contrast_factor: Contrast enhancement multiplier.
 
     Returns:
@@ -50,19 +50,19 @@ def convert_image_to_ascii(
 
         with Image.open(image_path) as img:
             gray = img.convert("L")
-            enhanced = ImageOps.autocontrast(gray, cutoff=5)
+            enhanced = ImageOps.autocontrast(gray, cutoff=2)
 
-            # Edge sharpening for facial features
+            # Edge sharpening for facial features and suit contours
             sharpened = enhanced.filter(ImageFilter.SHARPEN)
 
-            # High contrast boost
+            # Contrast boost
             enhancer = ImageEnhance.Contrast(sharpened)
             boosted = enhancer.enhance(contrast_factor)
 
-            # Resize to 64-column ASCII grid
+            # Resize to ASCII grid
             w, h = boosted.size
             rows = int((h / w) * cols * aspect_ratio)
-            rows = max(30, min(rows, 40))
+            rows = max(30, min(rows, 38))
 
             resized = boosted.resize((cols, rows), Image.Resampling.LANCZOS)
             pixels = list(resized.getdata())
@@ -73,8 +73,8 @@ def convert_image_to_ascii(
                 line = []
                 for x in range(cols):
                     pixel_val = pixels[y * cols + x]
-                    # Thresholding: pixels under 55 become 100% clean spaces (zero background dots)
-                    if pixel_val < 55:
+                    # Only pure black background (< 22) becomes space ' ', preserving suit jacket details
+                    if pixel_val < 22:
                         line.append(" ")
                     else:
                         char_idx = int((pixel_val / 255.0) * (ramp_len - 1))

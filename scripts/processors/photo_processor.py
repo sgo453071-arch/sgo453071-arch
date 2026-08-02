@@ -28,7 +28,7 @@ except Exception:
 
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg into ultra-sharp, face-focused assets/source-prepped.png.
+    """Preprocess assets/profile.jpg into balanced, full-torso assets/source-prepped.png.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -58,30 +58,33 @@ def process_profile_photo() -> Path:
                 except Exception as rembg_err:
                     logger.warning(f"rembg background removal bypassed: {rembg_err}")
 
-            # Focused face & torso crop (removes outer blue background glow)
+            # Crop both shoulders fully to maintain full suit symmetry
             w, h = processed.size
-            crop_left = int(w * 0.18)
-            crop_top = int(h * 0.05)
-            crop_right = int(w * 0.82)
-            crop_bottom = int(h * 0.72)
+            crop_left = int(w * 0.10)
+            crop_top = int(h * 0.04)
+            crop_right = int(w * 0.90)
+            crop_bottom = int(h * 0.85)
             cropped = processed.crop((crop_left, crop_top, crop_right, crop_bottom))
 
             # Convert to grayscale
             gray = cropped.convert("L")
 
-            # Cutoff outer low-intensity background noise to pure black 0
-            # Autocontrast with 4% cutoff
-            enhanced = ImageOps.autocontrast(gray, cutoff=4)
+            # Equalize histogram to lift shadow details on right shoulder
+            equalized = ImageOps.equalize(gray)
 
-            # Apply edge sharpening filter
-            sharpened = enhanced.filter(ImageFilter.SHARPEN)
+            # Blend equalized image with autocontrast to balance highlights & shadow
+            autocontrasted = ImageOps.autocontrast(gray, cutoff=2)
+            blended = Image.blend(equalized, autocontrasted, alpha=0.5)
 
-            # Boost contrast strongly for facial features and suit details
+            # Edge sharpening filter
+            sharpened = blended.filter(ImageFilter.SHARPEN)
+
+            # Boost contrast
             enhancer = ImageEnhance.Contrast(sharpened)
-            boosted = enhancer.enhance(2.4)
+            boosted = enhancer.enhance(1.8)
 
             boosted.save(output_path, "PNG")
-            logger.info(f"Successfully processed ultra-sharp photo -> {output_path}")
+            logger.info(f"Successfully processed balanced suit photo -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")
