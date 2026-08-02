@@ -19,7 +19,7 @@
   <tr style="border: none;">
     <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/ascii-profile.svg" alt="ASCII Portrait" width="390"/>
+        <img src="assets/generated/terminal-portrait.svg" alt="Terminal Portrait" width="390"/>
       </a>
     </td>
     <td align="center" valign="top" style="border: none; padding: 4px;">

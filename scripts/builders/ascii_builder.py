@@ -1,12 +1,12 @@
-"""ASCII Portrait SVG Builder with Multi-Tone Color Highlighting."""
+"""Crystal-Clear Terminal Portrait SVG Builder embedding HD base64 image with HUD elements."""
 
 from pathlib import Path
 from typing import TYPE_CHECKING, List
 
+from processors.photo_processor import get_profile_photo_base64, process_profile_photo
 from utils.file_utils import ensure_dir, get_project_root, write_text
-from utils.image_utils import convert_image_to_ascii_grid, ensure_profile_image
 from utils.logger import get_logger
-from utils.svg_utils import escape_xml, wrap_in_terminal_window
+from utils.svg_utils import wrap_in_terminal_window
 
 if TYPE_CHECKING:
     from utils.config import ConfigManager
@@ -16,15 +16,13 @@ logger = get_logger("ascii_builder")
 
 def build_ascii_svg(
     config_mgr: "ConfigManager",
-    output_filename: str = "ascii-profile.svg",
-    cols: int = 70,
+    output_filename: str = "terminal-portrait.svg",
 ) -> Path:
-    """Generate multi-tone crystal-clear animated ASCII portrait SVG.
+    """Generate 100% crystal-clear animated terminal portrait SVG embedding HD base64 photo.
 
     Args:
         config_mgr: ConfigManager instance.
         output_filename: Target output file name.
-        cols: Number of characters per ASCII row.
 
     Returns:
         Path to rendered SVG file.
@@ -33,89 +31,79 @@ def build_ascii_svg(
     output_path = root / "assets" / "generated" / output_filename
     ensure_dir(output_path.parent)
 
-    prepped_image = root / "assets" / "source-prepped.png"
-    if not prepped_image.exists():
-        prepped_image = ensure_profile_image()
-
     theme = config_mgr.theme
+    accent = theme.get("accent", "#38bdf8")
     text_main = theme.get("text_main", "#c9d1d9")
     text_muted = theme.get("text_muted", "#8b949e")
-
-    # Colors for multi-tone portrait clarity
-    color_high = "#f0f6fc"  # Bright white/ice for skin highlights & shirt collar
-    color_mid = "#38bdf8"   # Vibrant cyan for face contours & features
-    color_low = "#58a6ff"   # Soft blue for suit jacket & shoulders
-
-    # Generate 70-column multi-tone ASCII grid
-    grid = convert_image_to_ascii_grid(prepped_image, cols=cols, aspect_ratio=0.48)
-    num_rows = len(grid)
+    bg = theme.get("background", "#0d1117")
 
     width = 390
     height = 410
 
-    row_height = 8.6
-    font_size = 7.6
+    # Get HD base64 image
+    img_b64 = get_profile_photo_base64()
 
-    css_rules = [
-        f"""
-        @keyframes asciiFade {{
-          from {{ opacity: 0; }}
-          to {{ opacity: 1; }}
-        }}
-        .ascii-art {{
-          font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-          font-size: {font_size}px;
-          font-weight: 700;
-          white-space: pre;
-          opacity: 0;
-          animation: asciiFade 0.3s ease-out forwards;
-        }}
-        .c-high {{ fill: {color_high}; }}
-        .c-mid  {{ fill: {color_mid}; }}
-        .c-low  {{ fill: {color_low}; }}
-        .ascii-cursor {{
-          fill: {text_main};
-          animation: asciiFade 0.6s infinite alternate;
-        }}
-        .ascii-footer {{
-          font-family: 'JetBrains Mono', 'Fira Code', monospace;
-          font-size: 10px;
-          fill: {text_muted};
-        }}
-        """
-    ]
+    css_rules = f"""
+      @keyframes imgFade {{
+        from {{ opacity: 0; transform: scale(0.96); }}
+        to {{ opacity: 1; transform: scale(1); }}
+      }}
+      @keyframes blinkCursor {{
+        0%, 49% {{ opacity: 1; }}
+        50%, 100% {{ opacity: 0; }}
+      }}
+      .portrait-img {{
+        animation: imgFade 0.6s ease-out forwards;
+        transform-origin: center;
+      }}
+      .portrait-border {{
+        stroke: {accent};
+        stroke-width: 1.5;
+        fill: none;
+      }}
+      .portrait-hud {{
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 10px;
+        fill: {accent};
+        letter-spacing: 0.5px;
+      }}
+      .portrait-footer {{
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 10.5px;
+        fill: {text_muted};
+      }}
+      .portrait-cursor {{
+        fill: {text_main};
+        animation: blinkCursor 0.8s infinite;
+      }}
+    """
 
-    for idx in range(num_rows):
-        delay = idx * 10
-        css_rules.append(f".ar-{idx} {{ animation-delay: {delay}ms; }}")
+    inner_content = f"""
+      <!-- Inner Terminal Photo Frame -->
+      <g transform="translate(15, 12)">
+        <rect x="0" y="0" width="360" height="340" rx="8" fill="{bg}" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
+        <image href="{img_b64}" x="0" y="0" width="360" height="340" preserveAspectRatio="xMidYMid slice" class="portrait-img" clip-path="url(#img-clip)"/>
+        
+        <!-- Corner HUD Bracket Highlights -->
+        <path d="M 8,20 L 8,8 L 20,8" stroke="{accent}" stroke-width="2" fill="none"/>
+        <path d="M 340,8 L 352,8 L 352,20" stroke="{accent}" stroke-width="2" fill="none"/>
+        <path d="M 8,320 L 8,332 L 20,332" stroke="{accent}" stroke-width="2" fill="none"/>
+        <path d="M 340,332 L 352,332 L 352,320" stroke="{accent}" stroke-width="2" fill="none"/>
 
-    custom_css = "\n".join(css_rules)
+        <!-- Top Right Tech HUD Label -->
+        <text x="345" y="24" text-anchor="end" class="portrait-hud">[SYS_ID: ARCH_01]</text>
+      </g>
 
-    lines_svg = []
-    y_offset = 16
-    for idx, row in enumerate(grid):
-        tspans = []
-        for char, brightness in row:
-            escaped_char = escape_xml(char)
-            if brightness > 165:
-                cls = "c-high"
-            elif brightness > 90:
-                cls = "c-mid"
-            else:
-                cls = "c-low"
-            tspans.append(f'<tspan class="{cls}">{escaped_char}</tspan>')
+      <!-- Clip Path for rounded corners -->
+      <defs>
+        <clipPath id="img-clip">
+          <rect x="0" y="0" width="360" height="340" rx="8"/>
+        </clipPath>
+      </defs>
 
-        lines_svg.append(
-            f'<text x="8" y="{y_offset}" class="ascii-art ar-{idx}" xml:space="preserve">{"".join(tspans)}</text>'
-        )
-        y_offset += row_height
-
-    # Footer status inside portrait card
-    lines_svg.append(
-        f'<text x="8" y="375" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>'
-    )
-
-    inner_content = "\n".join(lines_svg)
+      <!-- Bottom Status Line inside Terminal Window -->
+      <text x="16" y="375" class="portrait-footer">[STATUS] 100% OPERATIONAL <tspan class="portrait-cursor">█</tspan></text>
+    """
 
     svg_str = wrap_in_terminal_window(
         title=f"{config_mgr.get_username()} ~ portrait",
@@ -123,9 +111,9 @@ def build_ascii_svg(
         width=width,
         height=height,
         theme=theme,
-        custom_css=custom_css,
+        custom_css=css_rules,
     )
 
     write_text(output_path, svg_str)
-    logger.info(f"Generated multi-tone crystal-clear ASCII profile SVG -> {output_path}")
+    logger.info(f"Generated crystal-clear HD terminal portrait SVG -> {output_path}")
     return output_path

@@ -1,5 +1,6 @@
-"""Image processor for full-frame ASCII portrait prep rendering full suit and hands."""
+"""Image processor for high-definition crystal-clear terminal profile portrait."""
 
+import base64
 import sys
 from pathlib import Path
 
@@ -26,16 +27,9 @@ try:
 except Exception:
     HAS_REMBG = False
 
-try:
-    import cv2  # type: ignore
-    import numpy as np  # type: ignore
-    HAS_CV2 = True
-except Exception:
-    HAS_CV2 = False
-
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg keeping 100% full frame to capture arms, hands, and suit.
+    """Preprocess assets/profile.jpg into a crystal-clear high-definition terminal portrait image.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -65,58 +59,46 @@ def process_profile_photo() -> Path:
                 except Exception as rembg_err:
                     logger.warning(f"rembg background removal bypassed: {rembg_err}")
 
-            # Keep 100% full frame width and height so right arm, hand, and suit sleeve are preserved
-            full_frame = processed
+            # Crop focused upper torso & face (5% to 85% bounds)
+            w, h = processed.size
+            crop_left = int(w * 0.05)
+            crop_top = int(h * 0.02)
+            crop_right = int(w * 0.95)
+            crop_bottom = int(h * 0.85)
+            cropped = processed.crop((crop_left, crop_top, crop_right, crop_bottom))
 
-            # Advanced Tone Balancing & Feature Enhancement using OpenCV if available
-            if HAS_CV2:
-                try:
-                    open_cv_image = cv2.cvtColor(np.array(full_frame.convert("RGB")), cv2.COLOR_RGB2BGR)
-                    gray = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
+            # Resize to high resolution 360x340 for crisp display inside SVG
+            resized = cropped.resize((360, 340), Image.Resampling.LANCZOS)
 
-                    # Gamma correction to illuminate lower-right hand and arm area
-                    gamma = 1.3
-                    inv_gamma = 1.0 / gamma
-                    table = np.array([((i / 255.0) ** inv_gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
-                    gamma_corrected = cv2.LUT(gray, table)
+            # High contrast and sharpening enhancement
+            enhancer = ImageEnhance.Contrast(resized)
+            contrast_boosted = enhancer.enhance(1.15)
 
-                    # CLAHE Adaptive Histogram Equalization
-                    clahe = cv2.createCLAHE(clipLimit=3.5, tileGridSize=(8, 8))
-                    equalized = clahe.apply(gamma_corrected)
+            sharpness_enhancer = ImageEnhance.Sharpness(contrast_boosted)
+            sharpened = sharpness_enhancer.enhance(1.4)
 
-                    # Canny Edge Detection for sharp hand, suit, and face contours
-                    edges = cv2.Canny(equalized, 40, 140)
-
-                    # Blend Equalized Grayscale (80%) + Edge Map (20%)
-                    blended = cv2.addWeighted(equalized, 0.80, edges, 0.20, 0)
-
-                    processed_pil = Image.fromarray(blended)
-                    processed_pil.save(output_path, "PNG")
-                    logger.info(f"Generated full-frame arm & hand enhanced portrait -> {output_path}")
-                    return output_path
-                except Exception as cv_err:
-                    logger.warning(f"OpenCV enhancement bypassed: {cv_err}")
-
-            # Fallback PIL Processing
-            gray_pil = full_frame.convert("L")
-
-            # Equalize and Autocontrast
-            equalized_pil = ImageOps.equalize(gray_pil)
-            autocontrasted = ImageOps.autocontrast(equalized_pil, cutoff=1)
-
-            # Edge Sharpening Filter
-            sharpened = autocontrasted.filter(ImageFilter.SHARPEN)
-
-            # Boost contrast
-            enhancer = ImageEnhance.Contrast(sharpened)
-            boosted = enhancer.enhance(1.8)
-
-            boosted.save(output_path, "PNG")
-            logger.info(f"Successfully processed full-frame photo -> {output_path}")
+            sharpened.save(output_path, "PNG")
+            logger.info(f"Successfully processed high-definition portrait -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")
         return input_path
+
+
+def get_profile_photo_base64() -> str:
+    """Get base64 Data URI of assets/source-prepped.png for inline SVG embedding.
+
+    Returns:
+        Base64 string formatted as data:image/png;base64,...
+    """
+    output_path = process_profile_photo()
+    try:
+        with open(output_path, "rb") as f:
+            encoded = base64.b64encode(f.read()).decode("utf-8")
+            return f"data:image/png;base64,{encoded}"
+    except Exception as err:
+        logger.error(f"Error encoding photo to base64: {err}")
+        return ""
 
 
 if __name__ == "__main__":

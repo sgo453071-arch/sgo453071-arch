@@ -54,7 +54,7 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
   <tr style="border: none;">
     <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="{github_url}">
-        <img src="assets/generated/ascii-profile.svg" alt="ASCII Portrait" width="390"/>
+        <img src="assets/generated/terminal-portrait.svg" alt="Terminal Portrait" width="390"/>
       </a>
     </td>
     <td align="center" valign="top" style="border: none; padding: 4px;">
