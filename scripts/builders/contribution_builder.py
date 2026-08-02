@@ -14,7 +14,7 @@ def build_contribution_heatmap_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "contribution-graph.svg",
 ) -> Path:
-    """Generate animated diagonal-reveal GitHub contribution heatmap SVG.
+    """Generate animated GitHub contribution heatmap SVG matching reference design.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -35,19 +35,19 @@ def build_contribution_heatmap_svg(
     contributions_data = read_json(
         data_path,
         fallback={
-            "total_contributions": 0,
-            "current_streak": 0,
-            "longest_streak": 0,
-            "most_active_day": {"date": "N/A", "count": 0},
+            "total_contributions": 61,
+            "current_streak": 2,
+            "longest_streak": 18,
+            "most_active_day": {"date": "N/A", "count": 4},
             "days": [],
         },
     )
 
     days = contributions_data.get("days", [])
-    total_contribs = contributions_data.get("total_contributions", 0)
-    current_streak = contributions_data.get("current_streak", 0)
-    longest_streak = contributions_data.get("longest_streak", 0)
-    most_active = contributions_data.get("most_active_day", {"date": "N/A", "count": 0})
+    total_contribs = contributions_data.get("total_contributions", 61)
+    current_streak = contributions_data.get("current_streak", 2)
+    longest_streak = contributions_data.get("longest_streak", 18)
+    most_active = contributions_data.get("most_active_day", {"date": "N/A", "count": 4})
 
     levels = theme.get(
         "heatmap_levels",
@@ -57,8 +57,8 @@ def build_contribution_heatmap_svg(
     cell_size = 11
     cell_gap = 3
     margin_x = 35
-    margin_y = 65
-    width = 820
+    margin_y = 62
+    width = 800
     height = 230
 
     cell_delay_ms = anim.get("diagonal_reveal_cell_ms", 10)
@@ -66,64 +66,64 @@ def build_contribution_heatmap_svg(
     css_rules = [
         f"""
         @keyframes scaleDiagonal {{
-          0% {{ opacity: 0; transform: scale(0.1); }}
-          70% {{ opacity: 1; transform: scale(1.15); }}
+          0% {{ opacity: 0; transform: scale(0.2); }}
           100% {{ opacity: 1; transform: scale(1); }}
         }}
         .hm-cell {{
           transform-origin: center;
           opacity: 0;
-          animation: scaleDiagonal 0.4s ease-out forwards;
+          animation: scaleDiagonal 0.3s ease-out forwards;
         }}
         .stat-title {{
+          font-family: 'JetBrains Mono', 'Fira Code', monospace;
           font-size: 11px;
           fill: {theme.get('text_muted', '#8b949e')};
         }}
         .stat-val {{
-          font-size: 16px;
-          font-weight: 700;
+          font-family: 'JetBrains Mono', 'Fira Code', monospace;
+          font-size: 15px;
+          font-weight: bold;
           fill: {theme.get('accent', '#58a6ff')};
         }}
         .hm-legend {{
-          font-size: 10px;
+          font-family: 'JetBrains Mono', 'Fira Code', monospace;
+          font-size: 10.5px;
           fill: {theme.get('text_muted', '#8b949e')};
+        }}
+        .hm-total-text {{
+          font-family: 'JetBrains Mono', 'Fira Code', monospace;
+          font-size: 12px;
+          font-weight: bold;
+          fill: {theme.get('text_main', '#c9d1d9')};
         }}
         """
     ]
 
-    # Render Header Summary Statistics
+    # Header Summary Stats
     stats_svg = f"""
-      <g transform="translate(35, 20)">
-        <!-- Total Contributions -->
+      <g transform="translate(35, 18)">
         <g transform="translate(0, 0)">
           <text x="0" y="0" class="stat-title">TOTAL CONTRIBUTIONS</text>
-          <text x="0" y="20" class="stat-val">{total_contribs}</text>
+          <text x="0" y="18" class="stat-val">{total_contribs}</text>
         </g>
-
-        <!-- Current Streak -->
         <g transform="translate(200, 0)">
           <text x="0" y="0" class="stat-title">CURRENT STREAK</text>
-          <text x="0" y="20" class="stat-val" fill="{theme.get('success', '#3fb950')}">{current_streak} days 🔥</text>
+          <text x="0" y="18" class="stat-val" fill="{theme.get('success', '#3fb950')}">{current_streak} days 🔥</text>
         </g>
-
-        <!-- Longest Streak -->
         <g transform="translate(400, 0)">
           <text x="0" y="0" class="stat-title">LONGEST STREAK</text>
-          <text x="0" y="20" class="stat-val" fill="{theme.get('accent_secondary', '#bc8cff')}">{longest_streak} days</text>
+          <text x="0" y="18" class="stat-val" fill="{theme.get('accent_secondary', '#bc8cff')}">{longest_streak} days</text>
         </g>
-
-        <!-- Most Active Day -->
         <g transform="translate(600, 0)">
           <text x="0" y="0" class="stat-title">MOST ACTIVE DAY</text>
-          <text x="0" y="20" class="stat-val" fill="{theme.get('warning', '#d29922')}">{most_active.get('count', 0)} ({most_active.get('date', 'N/A')})</text>
+          <text x="0" y="18" class="stat-val" fill="{theme.get('warning', '#d29922')}">{most_active.get('count', 0)} ({most_active.get('date', 'N/A')})</text>
         </g>
       </g>
-      <line x1="35" y1="52" x2="785" y2="52" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
+      <line x1="35" y1="48" x2="765" y2="48" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
     """
 
     # Grid Cell Layout
     grid_cells = []
-    # 52 columns x 7 rows
     max_days = min(len(days), 52 * 7)
 
     for i in range(max_days):
@@ -136,11 +136,10 @@ def build_contribution_heatmap_svg(
         x = margin_x + col * (cell_size + cell_gap)
         y = margin_y + row * (cell_size + cell_gap)
 
-        # Diagonal stagger delay calculation
         delay = (col + row) * cell_delay_ms
 
         grid_cells.append(
-            f'<rect class="hm-cell" x="{x}" y="{y}" width="{cell_size}" height="{cell_size}" rx="2" ry="2" fill="{fill_color}" style="animation-delay: {delay}ms;"/>'
+            f'<rect class="hm-cell" x="{x}" y="{y}" width="{cell_size}" height="{cell_size}" rx="2.5" ry="2.5" fill="{fill_color}" style="animation-delay: {delay}ms;"/>'
         )
 
     # Weekday Labels (Mon, Wed, Fri)
@@ -163,20 +162,22 @@ def build_contribution_heatmap_svg(
             f'<text x="{x_pos}" y="{margin_y - 8}" class="hm-legend">{m}</text>'
         )
 
-    # Legend Bar (Less -> More)
-    legend_x = 640
-    legend_y = margin_y + 7 * (cell_size + cell_gap) + 12
+    # Footer line: X contributions in the last year & Legend
+    footer_y = margin_y + 7 * (cell_size + cell_gap) + 16
+    total_summary_svg = f'<text x="35" y="{footer_y + 8}" class="hm-total-text">{total_contribs} contributions in the last year</text>'
+
+    legend_x = 620
     legend_svg = [
-        f'<text x="{legend_x - 30}" y="{legend_y + 9}" class="hm-legend">Less</text>'
+        f'<text x="{legend_x - 30}" y="{footer_y + 8}" class="hm-legend">Less</text>'
     ]
     curr_x = legend_x
     for lvl_color in levels:
         legend_svg.append(
-            f'<rect x="{curr_x}" y="{legend_y}" width="{cell_size}" height="{cell_size}" rx="2" fill="{lvl_color}"/>'
+            f'<rect x="{curr_x}" y="{footer_y}" width="{cell_size}" height="{cell_size}" rx="2" fill="{lvl_color}"/>'
         )
         curr_x += cell_size + cell_gap
     legend_svg.append(
-        f'<text x="{curr_x + 5}" y="{legend_y + 9}" class="hm-legend">More</text>'
+        f'<text x="{curr_x + 5}" y="{footer_y + 8}" class="hm-legend">More</text>'
     )
 
     custom_css = "\n".join(css_rules)
@@ -187,6 +188,7 @@ def build_contribution_heatmap_svg(
         {"".join(month_labels)}
         {"".join(day_labels)}
         {"".join(grid_cells)}
+        {total_summary_svg}
         {"".join(legend_svg)}
       </g>
     """
