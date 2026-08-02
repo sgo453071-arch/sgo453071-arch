@@ -79,14 +79,6 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
   </a>
 </p>
 
-<br/>
-
-<hr width="800"/>
-
-<p align="center">
-  <sub>⚡ Handcrafted locally with Python, OpenCV &amp; SVG. Zero third-party profile widgets. Automated via GitHub Actions.</sub>
-</p>
-
 </div>
 """
 
