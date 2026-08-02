@@ -9,7 +9,7 @@ from .logger import get_logger
 
 logger = get_logger("image_utils")
 
-# Character ramp for dark terminal background
+# Masterpiece high-contrast ASCII character ramp
 ASCII_RAMP = "   ..::-=+*#%@"
 
 
@@ -27,16 +27,16 @@ def ensure_profile_image() -> Path:
 
 def convert_image_to_ascii(
     image_path: Path,
-    cols: int = 60,
-    aspect_ratio: float = 0.50,
-    contrast_factor: float = 1.8,
+    cols: int = 68,
+    aspect_ratio: float = 0.48,
+    contrast_factor: float = 2.0,
 ) -> List[str]:
-    """Convert image file into full-body balanced ASCII portrait rows.
+    """Convert prepped image into world-class high-resolution ASCII portrait.
 
     Args:
         image_path: Path to source image.
         cols: Number of ASCII characters horizontally.
-        aspect_ratio: Vertical font correction factor (~0.50 for standard monospace).
+        aspect_ratio: Vertical font correction factor (~0.48 for standard monospace).
         contrast_factor: Contrast enhancement multiplier.
 
     Returns:
@@ -52,17 +52,17 @@ def convert_image_to_ascii(
             gray = img.convert("L")
             enhanced = ImageOps.autocontrast(gray, cutoff=2)
 
-            # Edge sharpening for facial features and suit contours
+            # Edge sharpening for eyes, tie, and suit contours
             sharpened = enhanced.filter(ImageFilter.SHARPEN)
 
             # Contrast boost
             enhancer = ImageEnhance.Contrast(sharpened)
             boosted = enhancer.enhance(contrast_factor)
 
-            # Resize to ASCII grid
+            # Resize to 68-column high-detail ASCII grid
             w, h = boosted.size
             rows = int((h / w) * cols * aspect_ratio)
-            rows = max(30, min(rows, 38))
+            rows = max(32, min(rows, 42))
 
             resized = boosted.resize((cols, rows), Image.Resampling.LANCZOS)
             pixels = list(resized.getdata())
@@ -73,8 +73,8 @@ def convert_image_to_ascii(
                 line = []
                 for x in range(cols):
                     pixel_val = pixels[y * cols + x]
-                    # Only pure black background (< 22) becomes space ' ', preserving suit jacket details
-                    if pixel_val < 22:
+                    # Pure black background (< 15) stays clean space ' '
+                    if pixel_val < 15:
                         line.append(" ")
                     else:
                         char_idx = int((pixel_val / 255.0) * (ramp_len - 1))

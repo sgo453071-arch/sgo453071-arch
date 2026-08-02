@@ -17,9 +17,9 @@ logger = get_logger("ascii_builder")
 def build_ascii_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "ascii-profile.svg",
-    cols: int = 64,
+    cols: int = 68,
 ) -> Path:
-    """Generate high-resolution ultra-sharp animated monochrome ASCII portrait SVG.
+    """Generate world-class high-resolution animated monochrome ASCII portrait SVG.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -42,15 +42,15 @@ def build_ascii_svg(
     text_main = theme.get("text_main", "#c9d1d9")
     text_muted = theme.get("text_muted", "#8b949e")
 
-    # Generate 64-column high-resolution ASCII lines
+    # Generate 68-column high-detail ASCII lines
     ascii_lines = convert_image_to_ascii(prepped_image, cols=cols, aspect_ratio=0.48)
     num_rows = len(ascii_lines)
 
     width = 390
     height = 410
 
-    row_height = 9.4
-    font_size = 8.0
+    row_height = 8.8
+    font_size = 7.8
 
     css_rules = [
         f"""
@@ -61,7 +61,7 @@ def build_ascii_svg(
         .ascii-art {{
           font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
           font-size: {font_size}px;
-          font-weight: bold;
+          font-weight: 700;
           fill: {accent};
           white-space: pre;
           opacity: 0;
@@ -80,23 +80,23 @@ def build_ascii_svg(
     ]
 
     for idx in range(num_rows):
-        delay = idx * 12
+        delay = idx * 10
         css_rules.append(f".ar-{idx} {{ animation-delay: {delay}ms; }}")
 
     custom_css = "\n".join(css_rules)
 
     lines_svg = []
-    y_offset = 18
+    y_offset = 16
     for idx, line in enumerate(ascii_lines):
         escaped_line = escape_xml(line)
         lines_svg.append(
-            f'<text x="12" y="{y_offset}" class="ascii-art ar-{idx}" xml:space="preserve">{escaped_line}</text>'
+            f'<text x="10" y="{y_offset}" class="ascii-art ar-{idx}" xml:space="preserve">{escaped_line}</text>'
         )
         y_offset += row_height
 
     # Footer status inside portrait card
     lines_svg.append(
-        f'<text x="12" y="375" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>'
+        f'<text x="10" y="375" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>'
     )
 
     inner_content = "\n".join(lines_svg)
@@ -111,5 +111,5 @@ def build_ascii_svg(
     )
 
     write_text(output_path, svg_str)
-    logger.info(f"Generated ASCII profile SVG -> {output_path}")
+    logger.info(f"Generated masterclass ASCII profile SVG -> {output_path}")
     return output_path

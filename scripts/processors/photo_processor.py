@@ -1,4 +1,4 @@
-"""Image processor for photo preparation and background isolation."""
+"""Image processor for world-class ASCII portrait prep using edge detection and CLAHE tone balancing."""
 
 import sys
 from pathlib import Path
@@ -26,9 +26,16 @@ try:
 except Exception:
     HAS_REMBG = False
 
+try:
+    import cv2  # type: ignore
+    import numpy as np  # type: ignore
+    HAS_CV2 = True
+except Exception:
+    HAS_CV2 = False
+
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg into balanced, full-torso assets/source-prepped.png.
+    """Preprocess assets/profile.jpg into a masterclass high-detail prepped image.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -58,33 +65,56 @@ def process_profile_photo() -> Path:
                 except Exception as rembg_err:
                     logger.warning(f"rembg background removal bypassed: {rembg_err}")
 
-            # Crop both shoulders fully to maintain full suit symmetry
+            # Crop both suit shoulders and full head for complete portrait symmetry
             w, h = processed.size
-            crop_left = int(w * 0.10)
-            crop_top = int(h * 0.04)
-            crop_right = int(w * 0.90)
-            crop_bottom = int(h * 0.85)
+            crop_left = int(w * 0.05)
+            crop_top = int(h * 0.02)
+            crop_right = int(w * 0.95)
+            crop_bottom = int(h * 0.88)
             cropped = processed.crop((crop_left, crop_top, crop_right, crop_bottom))
 
-            # Convert to grayscale
-            gray = cropped.convert("L")
+            # Advanced Tone Balancing & Feature Enhancement using OpenCV if available
+            if HAS_CV2:
+                try:
+                    # Convert PIL image to OpenCV BGR
+                    open_cv_image = cv2.cvtColor(np.array(cropped.convert("RGB")), cv2.COLOR_RGB2BGR)
+                    gray = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
 
-            # Equalize histogram to lift shadow details on right shoulder
-            equalized = ImageOps.equalize(gray)
+                    # CLAHE (Contrast Limited Adaptive Histogram Equalization)
+                    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+                    equalized = clahe.apply(gray)
 
-            # Blend equalized image with autocontrast to balance highlights & shadow
-            autocontrasted = ImageOps.autocontrast(gray, cutoff=2)
-            blended = Image.blend(equalized, autocontrasted, alpha=0.5)
+                    # Canny Edge Detection for sharp facial/suit contours
+                    edges = cv2.Canny(equalized, 50, 150)
 
-            # Edge sharpening filter
-            sharpened = blended.filter(ImageFilter.SHARPEN)
+                    # Blend Equalized Grayscale (75%) + Edge Map (25%)
+                    blended = cv2.addWeighted(equalized, 0.75, edges, 0.25, 0)
+
+                    # Convert back to PIL Image
+                    processed_pil = Image.fromarray(blended)
+                    processed_pil.save(output_path, "PNG")
+                    logger.info(f"Generated OpenCV CLAHE-enhanced portrait -> {output_path}")
+                    return output_path
+                except Exception as cv_err:
+                    logger.warning(f"OpenCV enhancement bypassed: {cv_err}")
+
+            # Fallback PIL Processing
+            gray_pil = cropped.convert("L")
+
+            # Equalize and Autocontrast
+            equalized_pil = ImageOps.equalize(gray_pil)
+            autocontrasted = ImageOps.autocontrast(gray_pil, cutoff=2)
+            blended_pil = Image.blend(equalized_pil, autocontrasted, alpha=0.6)
+
+            # Edge Sharpening Filter
+            sharpened = blended_pil.filter(ImageFilter.SHARPEN)
 
             # Boost contrast
             enhancer = ImageEnhance.Contrast(sharpened)
-            boosted = enhancer.enhance(1.8)
+            boosted = enhancer.enhance(1.9)
 
             boosted.save(output_path, "PNG")
-            logger.info(f"Successfully processed balanced suit photo -> {output_path}")
+            logger.info(f"Successfully processed masterclass photo -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")
