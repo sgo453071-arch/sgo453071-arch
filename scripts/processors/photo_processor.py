@@ -26,13 +26,13 @@ def process_profile_photo() -> Path:
     ensure_dir(output_path.parent)
 
     try:
-        from PIL import Image, ImageEnhance, ImageFilter, ImageOps
+        from PIL import Image, ImageEnhance, ImageFilter, ImageOps  # type: ignore
 
         with Image.open(input_path) as img:
             # Step 1: Attempt background removal if rembg is available
             processed = img
             try:
-                import rembg
+                import rembg  # type: ignore
                 logger.info("Applying rembg background removal...")
                 processed_bytes = rembg.remove(img)
                 if isinstance(processed_bytes, Image.Image):
