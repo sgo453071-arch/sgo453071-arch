@@ -1,7 +1,12 @@
 """Image processor for photo preparation and background isolation."""
 
+import sys
 from pathlib import Path
-from typing import Optional
+
+# Ensure scripts directory is on sys.path
+scripts_dir = Path(__file__).resolve().parent.parent
+if str(scripts_dir) not in sys.path:
+    sys.path.insert(0, str(scripts_dir))
 
 from utils.file_utils import ensure_dir, get_project_root
 from utils.image_utils import ensure_profile_image
