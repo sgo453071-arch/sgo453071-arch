@@ -1,13 +1,20 @@
 <div align="center">
 
-<!-- SECTION 1: CONTRIBUTIONS -->
+<!-- SECTION 1: GITHUB CONTRIBUTIONS -->
 <a href="https://github.com/sgo453071-arch">
   <img src="assets/generated/contribution-graph.svg" alt="Animated Contribution Heatmap" width="800"/>
 </a>
 
 <br/><br/>
 
-<!-- SECTION 2: WHOAMI (ASCII PORTRAIT + NEOFETCH INFO CARD) -->
+<!-- SECTION 2: LEETCODE STATS CARD -->
+<a href="https://leetcode.com/u/Sg19o/" target="_blank">
+  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Stats" width="800"/>
+</a>
+
+<br/><br/>
+
+<!-- SECTION 3: WHOAMI (ASCII PORTRAIT + NEOFETCH INFO CARD) -->
 <table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
   <tr style="border: none;">
     <td align="center" valign="top" style="border: none; padding: 4px;">
@@ -25,7 +32,7 @@
 
 <br/><br/>
 
-<!-- SECTION 3: SOCIAL CONNECT BADGES -->
+<!-- SECTION 4: SOCIAL CONNECT BADGES -->
 <p align="center">
   <a href="https://github.com/sgo453071-arch" target="_blank">
     <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>

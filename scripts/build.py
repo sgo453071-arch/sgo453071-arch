@@ -13,10 +13,12 @@ from builders.ascii_builder import build_ascii_svg
 from builders.banner_builder import build_terminal_banner
 from builders.card_builder import build_info_card_svg
 from builders.contribution_builder import build_contribution_heatmap_svg
+from builders.leetcode_builder import build_leetcode_svg
 from builders.project_builder import build_all_project_cards
 from builders.readme_builder import build_readme_file
 from builders.skills_builder import build_skills_svg
 from fetchers.github_fetcher import fetch_github_contributions
+from fetchers.leetcode_fetcher import fetch_leetcode_stats
 from processors.photo_processor import process_profile_photo
 from utils.config import ConfigManager
 from utils.logger import get_logger
@@ -47,38 +49,42 @@ def run_build(theme_override: str = None) -> bool:
         return False
 
     # Step 3: Photo Processing & ASCII Prep
-    logger.info("Step 1/9: Processing profile photo...")
+    logger.info("Step 1/10: Processing profile photo...")
     process_profile_photo()
 
     # Step 4: Generate ASCII SVG
-    logger.info("Step 2/9: Rendering ASCII portrait SVG...")
+    logger.info("Step 2/10: Rendering ASCII portrait SVG...")
     build_ascii_svg(config_mgr)
 
     # Step 5: Generate Terminal Banner SVG
-    logger.info("Step 3/9: Rendering terminal header banner SVG...")
+    logger.info("Step 3/10: Rendering terminal header banner SVG...")
     build_terminal_banner(config_mgr)
 
     # Step 6: Generate Neofetch Card SVG
-    logger.info("Step 4/9: Rendering neofetch info card SVG...")
+    logger.info("Step 4/10: Rendering neofetch info card SVG...")
     build_info_card_svg(config_mgr)
 
     # Step 7: Fetch Contributions Data & Render Heatmap SVG
-    logger.info("Step 5/9: Scraping GitHub contributions & metrics...")
+    logger.info("Step 5/10: Scraping GitHub contributions & metrics...")
     fetch_github_contributions(config_mgr.get_username())
 
-    logger.info("Step 6/9: Rendering contribution heatmap SVG...")
+    logger.info("Step 6/10: Rendering contribution heatmap SVG...")
     build_contribution_heatmap_svg(config_mgr)
 
-    # Step 8: Generate Skills Matrix SVG
-    logger.info("Step 7/9: Rendering skills category matrix SVG...")
-    build_skills_svg(config_mgr)
+    # Step 8: Fetch LeetCode Data & Render LeetCode Stats SVG
+    logger.info("Step 7/10: Scraping LeetCode user statistics...")
+    fetch_leetcode_stats("Sg19o")
 
-    # Step 9: Generate Project Cards SVG
-    logger.info("Step 8/9: Rendering project showcase cards...")
+    logger.info("Step 8/10: Rendering LeetCode stats card SVG...")
+    build_leetcode_svg(config_mgr)
+
+    # Step 9: Generate Skills & Projects SVGs
+    logger.info("Step 9/10: Rendering skills and project showcase cards...")
+    build_skills_svg(config_mgr)
     build_all_project_cards(config_mgr)
 
     # Step 10: Build Master README.md
-    logger.info("Step 9/9: Assembling master README.md file...")
+    logger.info("Step 10/10: Assembling master README.md file...")
     build_readme_file(config_mgr)
 
     # Step 11: Output Validation
