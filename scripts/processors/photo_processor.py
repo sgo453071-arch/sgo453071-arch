@@ -21,15 +21,9 @@ try:
 except Exception:
     HAS_PIL = False
 
-try:
-    import rembg  # type: ignore
-    HAS_REMBG = True
-except Exception:
-    HAS_REMBG = False
-
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg into a crystal-clear high-definition terminal portrait image.
+    """Preprocess assets/profile.jpg into a 100% unclipped crystal-clear HD terminal portrait.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -49,36 +43,24 @@ def process_profile_photo() -> Path:
 
     try:
         with Image.open(input_path) as img:
-            processed = img
-            if HAS_REMBG:
-                try:
-                    logger.info("Applying rembg background removal...")
-                    processed_bytes = rembg.remove(img)
-                    if isinstance(processed_bytes, Image.Image):
-                        processed = processed_bytes
-                except Exception as rembg_err:
-                    logger.warning(f"rembg background removal bypassed: {rembg_err}")
+            # Preserve full original frame so coat, face, tie, and arms are 100% complete
+            full_frame = img.convert("RGB")
 
-            # Crop focused upper torso & face (5% to 85% bounds)
-            w, h = processed.size
-            crop_left = int(w * 0.05)
-            crop_top = int(h * 0.02)
-            crop_right = int(w * 0.95)
-            crop_bottom = int(h * 0.85)
-            cropped = processed.crop((crop_left, crop_top, crop_right, crop_bottom))
+            # High resolution 480x480 for ultra-crisp display inside SVG
+            resized = full_frame.resize((480, 480), Image.Resampling.LANCZOS)
 
-            # Resize to high resolution 360x340 for crisp display inside SVG
-            resized = cropped.resize((360, 340), Image.Resampling.LANCZOS)
+            # Contrast, Color & Sharpness Enhancements
+            contrast_enhancer = ImageEnhance.Contrast(resized)
+            boosted_contrast = contrast_enhancer.enhance(1.20)
 
-            # High contrast and sharpening enhancement
-            enhancer = ImageEnhance.Contrast(resized)
-            contrast_boosted = enhancer.enhance(1.15)
+            color_enhancer = ImageEnhance.Color(boosted_contrast)
+            boosted_color = color_enhancer.enhance(1.15)
 
-            sharpness_enhancer = ImageEnhance.Sharpness(contrast_boosted)
-            sharpened = sharpness_enhancer.enhance(1.4)
+            sharpness_enhancer = ImageEnhance.Sharpness(boosted_color)
+            final_img = sharpness_enhancer.enhance(1.50)
 
-            sharpened.save(output_path, "PNG")
-            logger.info(f"Successfully processed high-definition portrait -> {output_path}")
+            final_img.save(output_path, "PNG", quality=98)
+            logger.info(f"Successfully processed HD full-suit portrait -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")
