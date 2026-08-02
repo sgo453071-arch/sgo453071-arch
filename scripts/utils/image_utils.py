@@ -9,7 +9,7 @@ from .logger import get_logger
 
 logger = get_logger("image_utils")
 
-# High contrast character ramp for dark terminal background (0=space/dark, 255=bright)
+# High-contrast character ramp optimized for dark terminal background
 ASCII_RAMP = "   ..::-=+*#%@"
 
 
@@ -27,16 +27,16 @@ def ensure_profile_image() -> Path:
 
 def convert_image_to_ascii(
     image_path: Path,
-    cols: int = 54,
-    aspect_ratio: float = 0.50,
-    contrast_factor: float = 1.8,
+    cols: int = 62,
+    aspect_ratio: float = 0.48,
+    contrast_factor: float = 2.2,
 ) -> List[str]:
-    """Convert image file into high-contrast ASCII string rows.
+    """Convert image file into ultra-sharp high-contrast ASCII portrait rows.
 
     Args:
         image_path: Path to source image.
         cols: Number of ASCII characters horizontally.
-        aspect_ratio: Vertical font correction factor (~0.50 for standard monospace).
+        aspect_ratio: Vertical font correction factor (~0.48 for standard monospace).
         contrast_factor: Contrast enhancement multiplier.
 
     Returns:
@@ -46,21 +46,23 @@ def convert_image_to_ascii(
         image_path = ensure_profile_image()
 
     try:
-        from PIL import Image, ImageEnhance, ImageOps
+        from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 
         with Image.open(image_path) as img:
-            # Convert to Grayscale
             gray = img.convert("L")
-            enhanced = ImageOps.autocontrast(gray)
+            enhanced = ImageOps.autocontrast(gray, cutoff=3)
 
-            # High contrast enhancement
-            enhancer = ImageEnhance.Contrast(enhanced)
+            # Sharpen edges for facial features
+            sharpened = enhanced.filter(ImageFilter.SHARPEN)
+
+            # High contrast boost
+            enhancer = ImageEnhance.Contrast(sharpened)
             boosted = enhancer.enhance(contrast_factor)
 
-            # Resize keeping aspect ratio
+            # Resize to ASCII grid
             w, h = boosted.size
             rows = int((h / w) * cols * aspect_ratio)
-            rows = max(24, min(rows, 38))
+            rows = max(28, min(rows, 38))
 
             resized = boosted.resize((cols, rows), Image.Resampling.LANCZOS)
             pixels = list(resized.getdata())
@@ -71,9 +73,12 @@ def convert_image_to_ascii(
                 line = []
                 for x in range(cols):
                     pixel_val = pixels[y * cols + x]
-                    # Map dark pixels to spaces ' ', bright face/shirt to characters
-                    char_idx = int((pixel_val / 255.0) * (ramp_len - 1))
-                    line.append(ASCII_RAMP[char_idx])
+                    # Background noise suppression threshold (< 42 becomes pure space)
+                    if pixel_val < 42:
+                        line.append(" ")
+                    else:
+                        char_idx = int((pixel_val / 255.0) * (ramp_len - 1))
+                        line.append(ASCII_RAMP[char_idx])
                 ascii_lines.append("".join(line))
 
             return ascii_lines

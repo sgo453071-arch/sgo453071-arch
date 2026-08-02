@@ -14,9 +14,9 @@ logger = get_logger("ascii_builder")
 def build_ascii_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "ascii-profile.svg",
-    cols: int = 50,
+    cols: int = 62,
 ) -> Path:
-    """Generate animated monochrome ASCII portrait SVG matching reference UI layout.
+    """Generate high-resolution animated monochrome ASCII portrait SVG.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -30,7 +30,7 @@ def build_ascii_svg(
     output_path = root / "assets" / "generated" / output_filename
     ensure_dir(output_path.parent)
 
-    prepped_image = root / "assets" / "profile.jpg"
+    prepped_image = root / "assets" / "source-prepped.png"
     if not prepped_image.exists():
         prepped_image = ensure_profile_image()
 
@@ -39,15 +39,15 @@ def build_ascii_svg(
     text_main = theme.get("text_main", "#c9d1d9")
     text_muted = theme.get("text_muted", "#8b949e")
 
-    # Generate ASCII lines
-    ascii_lines = convert_image_to_ascii(prepped_image, cols=cols, aspect_ratio=0.50)
+    # Generate high-resolution ASCII lines
+    ascii_lines = convert_image_to_ascii(prepped_image, cols=cols, aspect_ratio=0.48)
     num_rows = len(ascii_lines)
 
     width = 390
     height = 410
 
-    row_height = 10.5
-    font_size = 9.0
+    row_height = 9.8
+    font_size = 8.4
 
     css_rules = [
         f"""
@@ -58,6 +58,7 @@ def build_ascii_svg(
         .ascii-art {{
           font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
           font-size: {font_size}px;
+          font-weight: bold;
           fill: {accent};
           white-space: pre;
           opacity: 0;
@@ -76,7 +77,7 @@ def build_ascii_svg(
     ]
 
     for idx in range(num_rows):
-        delay = idx * 20
+        delay = idx * 15
         css_rules.append(f".ar-{idx} {{ animation-delay: {delay}ms; }}")
 
     custom_css = "\n".join(css_rules)
@@ -86,13 +87,13 @@ def build_ascii_svg(
     for idx, line in enumerate(ascii_lines):
         escaped_line = escape_xml(line)
         lines_svg.append(
-            f'<text x="14" y="{y_offset}" class="ascii-art ar-{idx}" xml:space="preserve">{escaped_line}</text>'
+            f'<text x="12" y="{y_offset}" class="ascii-art ar-{idx}" xml:space="preserve">{escaped_line}</text>'
         )
         y_offset += row_height
 
     # Footer status inside portrait card
     lines_svg.append(
-        f'<text x="14" y="360" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>'
+        f'<text x="12" y="375" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>'
     )
 
     inner_content = "\n".join(lines_svg)

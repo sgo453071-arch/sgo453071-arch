@@ -14,7 +14,6 @@ from utils.logger import get_logger
 
 logger = get_logger("photo_processor")
 
-# Top-level optional imports (zero indentation to prevent IDE virtual snippet parse errors)
 try:
     from PIL import Image, ImageEnhance, ImageFilter, ImageOps  # type: ignore
     HAS_PIL = True
@@ -29,7 +28,7 @@ except Exception:
 
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg into contrast-boosted assets/source-prepped.png.
+    """Preprocess assets/profile.jpg into face-focused, high-contrast assets/source-prepped.png.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -59,18 +58,27 @@ def process_profile_photo() -> Path:
                 except Exception as rembg_err:
                     logger.warning(f"rembg background removal bypassed: {rembg_err}")
 
-            # Grayscale & Contrast boost
-            gray = processed.convert("L")
-            enhanced = ImageOps.autocontrast(gray)
+            # Crop to upper torso / face region for high resolution portrait detail
+            w, h = processed.size
+            crop_top = int(h * 0.05)
+            crop_bottom = int(h * 0.85)
+            crop_left = int(w * 0.08)
+            crop_right = int(w * 0.92)
+            cropped = processed.crop((crop_left, crop_top, crop_right, crop_bottom))
 
-            enhancer = ImageEnhance.Contrast(enhanced)
-            contrast_boosted = enhancer.enhance(1.5)
+            # Grayscale & High Contrast Enhancement
+            gray = cropped.convert("L")
+            enhanced = ImageOps.autocontrast(gray, cutoff=2)
 
-            # Sharpen edges
-            sharpened = contrast_boosted.filter(ImageFilter.SHARPEN)
+            # Sharpen edges strongly
+            sharpened = enhanced.filter(ImageFilter.SHARPEN)
 
-            sharpened.save(output_path, "PNG")
-            logger.info(f"Successfully processed photo -> {output_path}")
+            # Boost contrast
+            enhancer = ImageEnhance.Contrast(sharpened)
+            boosted = enhancer.enhance(2.0)
+
+            boosted.save(output_path, "PNG")
+            logger.info(f"Successfully processed enhanced photo -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")

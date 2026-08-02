@@ -19,37 +19,12 @@
 
 <br/><br/>
 
-<!-- SECTION 3: PROJECTS SHOWCASE -->
-<table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
-  <tr style="border: none;">
-    <td align="center" valign="top" style="border: none; padding: 4px;">
-      <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/project-disha.svg" alt="DISHA FOR INDIA Card" width="380"/>
-      </a>
-    </td>
-    <td align="center" valign="top" style="border: none; padding: 4px;">
-      <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/project-ai.svg" alt="Future AI Projects Card" width="380"/>
-      </a>
-    </td>
-  </tr>
-  <tr style="border: none;">
-    <td align="center" colspan="2" valign="top" style="border: none; padding: 4px;">
-      <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/project-portfolio.svg" alt="Portfolio Engine Card" width="380"/>
-      </a>
-    </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<!-- SECTION 4: SKILLS MATRIX -->
+<!-- SECTION 3: SKILLS MATRIX -->
 <img src="assets/generated/skills.svg" alt="Skills Matrix" width="800"/>
 
 <br/><br/>
 
-<!-- SECTION 5: SOCIAL CONNECT & FOOTER -->
+<!-- SECTION 4: SOCIAL CONNECT & FOOTER -->
 <p align="center">
   <a href="https://github.com/sgo453071-arch">
     <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>

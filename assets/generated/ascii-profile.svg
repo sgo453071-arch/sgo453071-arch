@@ -17,7 +17,8 @@ to { opacity: 1; }
 }
 .ascii-art {
 font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-font-size: 9.0px;
+font-size: 8.4px;
+font-weight: bold;
 fill: #58a6ff;
 white-space: pre;
 opacity: 0;
@@ -33,30 +34,33 @@ font-size: 10px;
 fill: #8b949e;
 }
 .ar-0 { animation-delay: 0ms; }
-.ar-1 { animation-delay: 20ms; }
-.ar-2 { animation-delay: 40ms; }
-.ar-3 { animation-delay: 60ms; }
-.ar-4 { animation-delay: 80ms; }
-.ar-5 { animation-delay: 100ms; }
-.ar-6 { animation-delay: 120ms; }
-.ar-7 { animation-delay: 140ms; }
-.ar-8 { animation-delay: 160ms; }
-.ar-9 { animation-delay: 180ms; }
-.ar-10 { animation-delay: 200ms; }
-.ar-11 { animation-delay: 220ms; }
-.ar-12 { animation-delay: 240ms; }
-.ar-13 { animation-delay: 260ms; }
-.ar-14 { animation-delay: 280ms; }
-.ar-15 { animation-delay: 300ms; }
-.ar-16 { animation-delay: 320ms; }
-.ar-17 { animation-delay: 340ms; }
-.ar-18 { animation-delay: 360ms; }
-.ar-19 { animation-delay: 380ms; }
-.ar-20 { animation-delay: 400ms; }
-.ar-21 { animation-delay: 420ms; }
-.ar-22 { animation-delay: 440ms; }
-.ar-23 { animation-delay: 460ms; }
-.ar-24 { animation-delay: 480ms; }
+.ar-1 { animation-delay: 15ms; }
+.ar-2 { animation-delay: 30ms; }
+.ar-3 { animation-delay: 45ms; }
+.ar-4 { animation-delay: 60ms; }
+.ar-5 { animation-delay: 75ms; }
+.ar-6 { animation-delay: 90ms; }
+.ar-7 { animation-delay: 105ms; }
+.ar-8 { animation-delay: 120ms; }
+.ar-9 { animation-delay: 135ms; }
+.ar-10 { animation-delay: 150ms; }
+.ar-11 { animation-delay: 165ms; }
+.ar-12 { animation-delay: 180ms; }
+.ar-13 { animation-delay: 195ms; }
+.ar-14 { animation-delay: 210ms; }
+.ar-15 { animation-delay: 225ms; }
+.ar-16 { animation-delay: 240ms; }
+.ar-17 { animation-delay: 255ms; }
+.ar-18 { animation-delay: 270ms; }
+.ar-19 { animation-delay: 285ms; }
+.ar-20 { animation-delay: 300ms; }
+.ar-21 { animation-delay: 315ms; }
+.ar-22 { animation-delay: 330ms; }
+.ar-23 { animation-delay: 345ms; }
+.ar-24 { animation-delay: 360ms; }
+.ar-25 { animation-delay: 375ms; }
+.ar-26 { animation-delay: 390ms; }
+.ar-27 { animation-delay: 405ms; }
 </style>
 <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
 <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
@@ -71,32 +75,35 @@ fill: #8b949e;
 <circle cx="48" cy="19" r="5.5" fill="#27c93f" />
 <text x="195.0" y="23" text-anchor="middle" class="term-title">sgo453071-arch ~ portrait</text>
 <g transform="translate(0, 36)">
-<text x="14" y="18" class="ascii-art ar-0" xml:space="preserve">                                                  </text>
-<text x="14" y="28.5" class="ascii-art ar-1" xml:space="preserve">                                                  </text>
-<text x="14" y="39.0" class="ascii-art ar-2" xml:space="preserve">                    ..............                </text>
-<text x="14" y="49.5" class="ascii-art ar-3" xml:space="preserve">                 ...::. . .    .:....             </text>
-<text x="14" y="60.0" class="ascii-art ar-4" xml:space="preserve">               ...::.           .-::...           </text>
-<text x="14" y="70.5" class="ascii-art ar-5" xml:space="preserve">             ...::-=      ..    .+=-::...         </text>
-<text x="14" y="81.0" class="ascii-art ar-6" xml:space="preserve">            ...:-=+*.   .+#+-:.:%*+=-::...        </text>
-<text x="14" y="91.5" class="ascii-art ar-7" xml:space="preserve">            ..::=+*#:. =@%=:.=::%#*+=-::...       </text>
-<text x="14" y="102.0" class="ascii-art ar-8" xml:space="preserve">            .::-=+*#%==+@%%++*-:%%#*+-::...       </text>
-<text x="14" y="112.5" class="ascii-art ar-9" xml:space="preserve">           ..::-=**#%%=:-=-::. -@%#*+=::....      </text>
-<text x="14" y="123.0" class="ascii-art ar-10" xml:space="preserve">           ..::-=+*#%@%=.    ..+%%#*+=::...       </text>
-<text x="14" y="133.5" class="ascii-art ar-11" xml:space="preserve">            ..::=++++-+%%=:..*.  .::::::..        </text>
-<text x="14" y="144.0" class="ascii-art ar-12" xml:space="preserve">            ..:::::...-@#=--##          ..        </text>
-<text x="14" y="154.5" class="ascii-art ar-13" xml:space="preserve">             .........:%+-  =*                    </text>
-<text x="14" y="165.0" class="ascii-art ar-14" xml:space="preserve">             .........:%@* :%#.                   </text>
-<text x="14" y="175.5" class="ascii-art ar-15" xml:space="preserve">             .. .......%%: .@*                    </text>
-<text x="14" y="186.0" class="ascii-art ar-16" xml:space="preserve">             ..  ......%%. .%+                    </text>
-<text x="14" y="196.5" class="ascii-art ar-17" xml:space="preserve">             .   . . . #* ..@-                    </text>
-<text x="14" y="207.0" class="ascii-art ar-18" xml:space="preserve">             .     .   ++ .:@:                    </text>
-<text x="14" y="217.5" class="ascii-art ar-19" xml:space="preserve">             .     .   ::. :@.                    </text>
-<text x="14" y="228.0" class="ascii-art ar-20" xml:space="preserve">                   .   ::  :%.                    </text>
-<text x="14" y="238.5" class="ascii-art ar-21" xml:space="preserve">                  .    :.. :%              .      </text>
-<text x="14" y="249.0" class="ascii-art ar-22" xml:space="preserve">            .     .    : ..:@.                    </text>
-<text x="14" y="259.5" class="ascii-art ar-23" xml:space="preserve">            .    ..  ..: ..:%-                    </text>
-<text x="14" y="270.0" class="ascii-art ar-24" xml:space="preserve">            ..   ..  ..:.. :##                    </text>
-<text x="14" y="360" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>
+<text x="12" y="18" class="ascii-art ar-0" xml:space="preserve">                                                              </text>
+<text x="12" y="27.8" class="ascii-art ar-1" xml:space="preserve">                          ..:::::::::::..                     </text>
+<text x="12" y="37.6" class="ascii-art ar-2" xml:space="preserve">                      ..:-=+::::::....:=+=::.                 </text>
+<text x="12" y="47.400000000000006" class="ascii-art ar-3" xml:space="preserve">                   ..:-+#*=. .. ..      :%#*=::.              </text>
+<text x="12" y="57.2" class="ascii-art ar-4" xml:space="preserve">                 .::=*##:..               *@%#+-:..           </text>
+<text x="12" y="67.0" class="ascii-art ar-5" xml:space="preserve">               ..-+#%%@+   .              :@%@%#=::.          </text>
+<text x="12" y="76.8" class="ascii-art ar-6" xml:space="preserve">              .:=*%@@%%=        +++=-::: :%%%@@@%+-:. .       </text>
+<text x="12" y="86.6" class="ascii-art ar-7" xml:space="preserve">             .:+*%@@%%%%      :*@%####+--@@@@@@%@%*-:.        </text>
+<text x="12" y="96.39999999999999" class="ascii-art ar-8" xml:space="preserve">            .:=*%@%@@@%%. . :%@%+-:  -=.-%%@@@@@%%%*-:...     </text>
+<text x="12" y="106.19999999999999" class="ascii-art ar-9" xml:space="preserve">            .-+#@@@@@@%%*+:++@%%%%#++%@#+#@%@@@@@@%%+::.      </text>
+<text x="12" y="115.99999999999999" class="ascii-art ar-10" xml:space="preserve">            .=*%@@@@@@@%@#=*=%@@@%%**+--=#@%@@@@@@%%*-:.      </text>
+<text x="12" y="125.79999999999998" class="ascii-art ar-11" xml:space="preserve">           .:=*%@@@@@@@@%%+===#%%%#-:-:..%%%@@@@@@@%#=:.      </text>
+<text x="12" y="135.6" class="ascii-art ar-12" xml:space="preserve">           .:=+%@@@@@@%%%@@@#:...:..-:..*@@@%%%%%%%%#=::...   </text>
+<text x="12" y="145.4" class="ascii-art ar-13" xml:space="preserve">            .-+#%@%%%@@@@%%#%@*:  .  .: :+#%@@@@@@%#+::.      </text>
+<text x="12" y="155.20000000000002" class="ascii-art ar-14" xml:space="preserve">            .:=*%@@@@@%#**=*%%@@+*:.-%@     .:-=*###=:..      </text>
+<text x="12" y="165.00000000000003" class="ascii-art ar-15" xml:space="preserve">             .:=*%##*=:.-+-=@%%#*#+%@@+            ....       </text>
+<text x="12" y="174.80000000000004" class="ascii-art ar-16" xml:space="preserve">             ..=++=-:...:=--%%-:+  :*%:                       </text>
+<text x="12" y="184.60000000000005" class="ascii-art ar-17" xml:space="preserve">              .=-:::: :.:::=%%%+= :#*#:                       </text>
+<text x="12" y="194.40000000000006" class="ascii-art ar-18" xml:space="preserve">              ::.:..: ...:.-@%@%= :@%@.     .                 </text>
+<text x="12" y="204.20000000000007" class="ascii-art ar-19" xml:space="preserve">              :. : ........:@%%#-  %%%.                       </text>
+<text x="12" y="214.00000000000009" class="ascii-art ar-20" xml:space="preserve">              -. . ........:@%%=. .%%#                        </text>
+<text x="12" y="223.8000000000001" class="ascii-art ar-21" xml:space="preserve">             .-     . .  ...%@#   .#@*                        </text>
+<text x="12" y="233.6000000000001" class="ascii-art ar-22" xml:space="preserve">             ::       .     %@*  ..*@=                        </text>
+<text x="12" y="243.40000000000012" class="ascii-art ar-23" xml:space="preserve">             .              #%- .:.#@:                        </text>
+<text x="12" y="253.20000000000013" class="ascii-art ar-24" xml:space="preserve">             :.             *%: ::.%@:                        </text>
+<text x="12" y="263.0000000000001" class="ascii-art ar-25" xml:space="preserve">            .:        .     -@-:. .%@.                        </text>
+<text x="12" y="272.8000000000001" class="ascii-art ar-26" xml:space="preserve">            .:        .     +@:   .%%.                        </text>
+<text x="12" y="282.60000000000014" class="ascii-art ar-27" xml:space="preserve">            .         .     +%. . :%%:                        </text>
+<text x="12" y="375" class="ascii-footer">[STATUS] 100% OPERATIONAL <tspan class="ascii-cursor">█</tspan></text>
 </g>
 </g>
 </svg>
