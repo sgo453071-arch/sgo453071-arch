@@ -59,20 +59,20 @@ animation: barGrow 1.2s ease-out forwards;
 <g transform="translate(0, 36)">
 <g transform="translate(35, 18)">
 <g transform="translate(0, 0)">
-<text x="0" y="0" class="lc-stat-title">PROBLEMS SOLVED</text>
+<text x="0" y="0" class="lc-stat-title">TOTAL SOLVED</text>
 <text x="0" y="18" class="lc-stat-val" fill="#FFA116">319</text>
 </g>
-<g transform="translate(200, 0)">
+<g transform="translate(180, 0)">
+<text x="0" y="0" class="lc-stat-title">CURRENT STREAK</text>
+<text x="0" y="18" class="lc-stat-val" fill="#ff7b72">261 days 🔥</text>
+</g>
+<g transform="translate(380, 0)">
 <text x="0" y="0" class="lc-stat-title">GLOBAL RANKING</text>
 <text x="0" y="18" class="lc-stat-val" fill="#58a6ff">#444,032</text>
 </g>
-<g transform="translate(400, 0)">
-<text x="0" y="0" class="lc-stat-title">ACCEPTANCE RATE</text>
+<g transform="translate(580, 0)">
+<text x="0" y="0" class="lc-stat-title">ACCEPTANCE</text>
 <text x="0" y="18" class="lc-stat-val" fill="#3fb950">65.4%</text>
-</g>
-<g transform="translate(600, 0)">
-<text x="0" y="0" class="lc-stat-title">LEETCODE PROFILE</text>
-<text x="0" y="18" class="lc-stat-val" fill="#bc8cff">@Sg19o</text>
 </g>
 </g>
 <line x1="35" y1="48" x2="765" y2="48" stroke="#30363d" stroke-width="1"/>

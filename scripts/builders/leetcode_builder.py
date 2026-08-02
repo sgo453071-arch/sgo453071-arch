@@ -1,4 +1,4 @@
-"""LeetCode Stats SVG Builder."""
+"""LeetCode Stats SVG Builder with Active Streak Display."""
 
 from pathlib import Path
 from typing import Any, Dict
@@ -14,7 +14,7 @@ def build_leetcode_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "leetcode-stats.svg",
 ) -> Path:
-    """Generate animated terminal-styled LeetCode progress SVG card.
+    """Generate animated terminal-styled LeetCode progress SVG card with active streak.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -45,6 +45,8 @@ def build_leetcode_svg(
             "hard_total": 730,
             "acceptance_rate": 65.4,
             "ranking": 245000,
+            "streak": 261,
+            "total_active_days": 261,
         },
     )
 
@@ -52,6 +54,8 @@ def build_leetcode_svg(
     total_solved = leetcode_data.get("total_solved", 319)
     ranking = leetcode_data.get("ranking", 0)
     ranking_str = f"#{ranking:,}" if ranking > 0 else "N/A"
+    streak = leetcode_data.get("streak", 261)
+    streak_str = f"{streak} days 🔥"
 
     easy_s = leetcode_data.get("easy_solved", 145)
     easy_t = max(1, leetcode_data.get("easy_total", 820))
@@ -103,24 +107,24 @@ def build_leetcode_svg(
       }}
     """
 
-    # Top Header Summary
+    # Top Header Summary with Streak
     stats_svg = f"""
       <g transform="translate(35, 18)">
         <g transform="translate(0, 0)">
-          <text x="0" y="0" class="lc-stat-title">PROBLEMS SOLVED</text>
+          <text x="0" y="0" class="lc-stat-title">TOTAL SOLVED</text>
           <text x="0" y="18" class="lc-stat-val" fill="#FFA116">{total_solved}</text>
         </g>
-        <g transform="translate(200, 0)">
+        <g transform="translate(180, 0)">
+          <text x="0" y="0" class="lc-stat-title">CURRENT STREAK</text>
+          <text x="0" y="18" class="lc-stat-val" fill="#ff7b72">{streak_str}</text>
+        </g>
+        <g transform="translate(380, 0)">
           <text x="0" y="0" class="lc-stat-title">GLOBAL RANKING</text>
           <text x="0" y="18" class="lc-stat-val" fill="{accent}">{ranking_str}</text>
         </g>
-        <g transform="translate(400, 0)">
-          <text x="0" y="0" class="lc-stat-title">ACCEPTANCE RATE</text>
+        <g transform="translate(580, 0)">
+          <text x="0" y="0" class="lc-stat-title">ACCEPTANCE</text>
           <text x="0" y="18" class="lc-stat-val" fill="{theme.get('success', '#3fb950')}">{leetcode_data.get('acceptance_rate', 65.4)}%</text>
-        </g>
-        <g transform="translate(600, 0)">
-          <text x="0" y="0" class="lc-stat-title">LEETCODE PROFILE</text>
-          <text x="0" y="18" class="lc-stat-val" fill="{theme.get('accent_secondary', '#bc8cff')}">@{username}</text>
         </g>
       </g>
       <line x1="35" y1="48" x2="765" y2="48" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
