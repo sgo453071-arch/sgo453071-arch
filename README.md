@@ -14,12 +14,12 @@
 
 <br/><br/>
 
-<!-- SECTION 3: WHOAMI (ASCII PORTRAIT + NEOFETCH INFO CARD) -->
+<!-- SECTION 3: WHOAMI (HD DEVELOPER PORTRAIT + NEOFETCH INFO CARD) -->
 <table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
   <tr style="border: none;">
     <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/profile-hd-portrait.svg" alt="HD Terminal Portrait" width="390"/>
+        <img src="assets/source-prepped.png" alt="Developer HD Portrait" width="390" style="border-radius: 8px;"/>
       </a>
     </td>
     <td align="center" valign="top" style="border: none; padding: 4px;">
