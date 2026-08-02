@@ -1,4 +1,4 @@
-"""LeetCode 365-Day Submission Calendar Heatmap SVG Builder."""
+"""LeetCode 365-Day Submission Calendar Heatmap SVG Builder matching official design."""
 
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -38,28 +38,26 @@ def build_leetcode_svg(
         fallback={
             "username": "Sg19o",
             "total_solved": 319,
-            "streak": 261,
-            "longest_streak": 261,
-            "total_active_days": 261,
+            "total_submissions": 831,
+            "total_active_days": 316,
+            "max_streak": 261,
             "submission_calendar": {},
         },
     )
 
     username = leetcode_data.get("username", "Sg19o")
-    total_solved = leetcode_data.get("total_solved", 319)
-    streak = leetcode_data.get("streak", 261)
-    longest_streak = leetcode_data.get("longest_streak", max(261, streak))
-    active_days = leetcode_data.get("total_active_days", 261)
+    total_submissions = leetcode_data.get("total_submissions", 831)
+    total_active_days = leetcode_data.get("total_active_days", 316)
+    max_streak = leetcode_data.get("max_streak", 261)
     sub_map = leetcode_data.get("submission_calendar", {})
 
     width = 800
     height = 230
 
-    # Build 52 weeks (364 days) calendar grid ending today
+    # Build 52 weeks calendar grid ending today
     now = datetime.now(timezone.utc)
     today_date = now.date()
 
-    # Find last Sunday to align 52 full columns
     days_since_sunday = (today_date.weekday() + 1) % 7
     end_date = today_date
     start_date = end_date - timedelta(days=(52 * 7 - 1) + days_since_sunday)
@@ -74,12 +72,12 @@ def build_leetcode_svg(
         except Exception:
             pass
 
-    # Heatmap Theme: Signature LeetCode Amber/Orange Palette
+    # Signature Vibrant Green Heatmap Palette (Matching Official LeetCode Profile)
     c_l0 = "#161b22"
-    c_l1 = "#7c2d12"
-    c_l2 = "#c2410c"
-    c_l3 = "#f97316"
-    c_l4 = "#ffa116"
+    c_l1 = "#0e4429"
+    c_l2 = "#006d32"
+    c_l3 = "#26a641"
+    c_l4 = "#39d353"
 
     css_rules = f"""
       @keyframes heatFade {{
@@ -91,16 +89,19 @@ def build_leetcode_svg(
         animation: heatFade 0.25s ease-out forwards;
         transform-origin: center;
       }}
-      .lc-stat-title {{
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 10px;
-        fill: {text_muted};
-        letter-spacing: 0.5px;
+      .lc-header-title {{
+        font-family: 'JetBrains Mono', 'Fira Code', -apple-system, sans-serif;
+        font-size: 15px;
+        fill: {text_main};
       }}
-      .lc-stat-val {{
+      .lc-header-sub {{
         font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 16px;
+        font-size: 11.5px;
+        fill: {text_muted};
+      }}
+      .lc-header-val {{
         font-weight: bold;
+        fill: {accent};
       }}
       .lc-label {{
         font-family: 'JetBrains Mono', 'Fira Code', monospace;
@@ -115,27 +116,19 @@ def build_leetcode_svg(
       }}
     """
 
-    # Top Header Summary
+    # Top Header Summary matching official LeetCode profile
     header_svg = f"""
-      <g transform="translate(35, 18)">
-        <g transform="translate(0, 0)">
-          <text x="0" y="0" class="lc-stat-title">TOTAL SOLVED</text>
-          <text x="0" y="18" class="lc-stat-val" fill="#FFA116">{total_solved}</text>
-        </g>
-        <g transform="translate(200, 0)">
-          <text x="0" y="0" class="lc-stat-title">CURRENT STREAK</text>
-          <text x="0" y="18" class="lc-stat-val" fill="#ff7b72">{streak} days 🔥</text>
-        </g>
-        <g transform="translate(410, 0)">
-          <text x="0" y="0" class="lc-stat-title">LONGEST STREAK</text>
-          <text x="0" y="18" class="lc-stat-val" fill="{accent}">{longest_streak} days</text>
-        </g>
-        <g transform="translate(610, 0)">
-          <text x="0" y="0" class="lc-stat-title">ACTIVE DAYS</text>
-          <text x="0" y="18" class="lc-stat-val" fill="{theme.get('success', '#3fb950')}">{active_days} days</text>
+      <g transform="translate(35, 24)">
+        <text x="0" y="0" class="lc-header-title">
+          <tspan font-size="18px" font-weight="bold" fill="#f0f6fc">{total_submissions}</tspan> submissions in the past one year
+        </text>
+        <g transform="translate(430, -3)">
+          <text x="0" y="0" class="lc-header-sub">
+            Total active days: <tspan class="lc-header-val">{total_active_days}</tspan> | Max streak: <tspan class="lc-header-val" fill="#ff7b72">{max_streak} 🔥</tspan>
+          </text>
         </g>
       </g>
-      <line x1="35" y1="48" x2="765" y2="48" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
+      <line x1="35" y1="42" x2="765" y2="42" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
     """
 
     # Render 52-Week Grid
@@ -146,7 +139,7 @@ def build_leetcode_svg(
     cell_size = 10
     cell_gap = 3.2
     grid_x_start = 68
-    grid_y_start = 74
+    grid_y_start = 68
 
     curr = start_date
     col = 0
@@ -201,9 +194,9 @@ def build_leetcode_svg(
     """
 
     # Footer
-    footer_y = 194
+    footer_y = 190
     footer_svg = f"""
-      <text x="68" y="{footer_y}" class="lc-footer-txt">{total_solved} LeetCode problems solved in the last year</text>
+      <text x="68" y="{footer_y}" class="lc-footer-txt">{total_submissions} submissions in the past one year • {total_active_days} active days</text>
       <g transform="translate(620, {footer_y - 9})">
         <text x="0" y="8" class="lc-label">Less</text>
         <rect x="28" y="0" width="10" height="10" rx="2" fill="{c_l0}"/>
@@ -224,7 +217,7 @@ def build_leetcode_svg(
     """
 
     svg_str = wrap_in_terminal_window(
-        title=f"git log --leetcode --author={username}",
+        title=f"leetcode --user {username} --calendar",
         content_svg=inner_content,
         width=width,
         height=height,
@@ -233,5 +226,5 @@ def build_leetcode_svg(
     )
 
     write_text(output_path, svg_str)
-    logger.info(f"Generated LeetCode calendar heatmap SVG -> {output_path}")
+    logger.info(f"Generated official LeetCode submission calendar SVG -> {output_path}")
     return output_path

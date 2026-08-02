@@ -1,14 +1,10 @@
 {
   "username": "Sg19o",
   "total_solved": 319,
-  "easy_solved": 131,
-  "medium_solved": 163,
-  "hard_solved": 25,
-  "acceptance_rate": 65.4,
-  "ranking": 444032,
-  "streak": 261,
-  "longest_streak": 261,
+  "total_submissions": 831,
   "total_active_days": 316,
+  "max_streak": 261,
+  "streak": 261,
   "submission_calendar": {
     "1767225600": 4,
     "1767312000": 3,
