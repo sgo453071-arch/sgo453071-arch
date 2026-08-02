@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 230" width="800" height="230">
+<defs>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');
+.term-window {
+font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+fill: #c9d1d9;
+}
+.term-title {
+font-size: 13px;
+font-weight: 600;
+fill: #8b949e;
+}
+@keyframes barGrow {
+from { width: 0; }
+}
+.lc-stat-title {
+font-family: 'JetBrains Mono', 'Fira Code', monospace;
+font-size: 11px;
+fill: #8b949e;
+}
+.lc-stat-val {
+font-family: 'JetBrains Mono', 'Fira Code', monospace;
+font-size: 16px;
+font-weight: bold;
+fill: #58a6ff;
+}
+.lc-diff-label {
+font-family: 'JetBrains Mono', 'Fira Code', monospace;
+font-size: 12px;
+font-weight: bold;
+}
+.lc-diff-count {
+font-family: 'JetBrains Mono', 'Fira Code', monospace;
+font-size: 11.5px;
+fill: #c9d1d9;
+}
+.lc-bar-bg {
+fill: #0d1117;
+stroke: #30363d;
+stroke-width: 1;
+}
+.lc-bar-fill {
+animation: barGrow 1.2s ease-out forwards;
+}
+</style>
+<filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+<feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+</filter>
+</defs>
+<g class="term-window">
+<rect x="2" y="2" width="796" height="226" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#shadow)"/>
+<path d="M 2.75,10 Q 2.75,2.75 10,2.75 L 790,2.75 Q 797.25,2.75 797.25,10 L 797.25,36 L 2.75,36 Z" fill="#21262d"/>
+<line x1="2" y1="36" x2="798" y2="36" stroke="#30363d" stroke-width="1"/>
+<circle cx="16" cy="19" r="5.5" fill="#ff5f56" />
+<circle cx="32" cy="19" r="5.5" fill="#ffbd2e" />
+<circle cx="48" cy="19" r="5.5" fill="#27c93f" />
+<text x="400.0" y="23" text-anchor="middle" class="term-title">leetcode --user Sg19o --stats</text>
+<g transform="translate(0, 36)">
+<g transform="translate(35, 18)">
+<g transform="translate(0, 0)">
+<text x="0" y="0" class="lc-stat-title">PROBLEMS SOLVED</text>
+<text x="0" y="18" class="lc-stat-val" fill="#FFA116">319</text>
+</g>
+<g transform="translate(200, 0)">
+<text x="0" y="0" class="lc-stat-title">GLOBAL RANKING</text>
+<text x="0" y="18" class="lc-stat-val" fill="#58a6ff">#444,032</text>
+</g>
+<g transform="translate(400, 0)">
+<text x="0" y="0" class="lc-stat-title">ACCEPTANCE RATE</text>
+<text x="0" y="18" class="lc-stat-val" fill="#3fb950">65.4%</text>
+</g>
+<g transform="translate(600, 0)">
+<text x="0" y="0" class="lc-stat-title">LEETCODE PROFILE</text>
+<text x="0" y="18" class="lc-stat-val" fill="#bc8cff">@Sg19o</text>
+</g>
+</g>
+<line x1="35" y1="48" x2="765" y2="48" stroke="#30363d" stroke-width="1"/>
+<g transform="translate(35, 66)">
+<g transform="translate(0, 0)">
+<text x="0" y="14" class="lc-diff-label" fill="#00b8a3">Easy</text>
+<rect x="90" y="2" width="460" height="14" rx="4" class="lc-bar-bg"/>
+<rect x="90" y="2" width="302" height="14" rx="4" fill="#00b8a3" class="lc-bar-fill"/>
+<text x="565" y="14" class="lc-diff-count"><tspan font-weight="bold">131</tspan> / 958 (13%)</text>
+</g>
+<g transform="translate(0, 32)">
+<text x="0" y="14" class="lc-diff-label" fill="#ffc01e">Medium</text>
+<rect x="90" y="2" width="460" height="14" rx="4" class="lc-bar-bg"/>
+<rect x="90" y="2" width="376" height="14" rx="4" fill="#ffc01e" class="lc-bar-fill"/>
+<text x="565" y="14" class="lc-diff-count"><tspan font-weight="bold">163</tspan> / 2095 (7%)</text>
+</g>
+<g transform="translate(0, 64)">
+<text x="0" y="14" class="lc-diff-label" fill="#ff375f">Hard</text>
+<rect x="90" y="2" width="460" height="14" rx="4" class="lc-bar-bg"/>
+<rect x="90" y="2" width="57" height="14" rx="4" fill="#ff375f" class="lc-bar-fill"/>
+<text x="565" y="14" class="lc-diff-count"><tspan font-weight="bold">25</tspan> / 960 (2%)</text>
+</g>
+</g>
+</g>
+</g>
+</svg>
