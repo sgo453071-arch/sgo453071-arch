@@ -1,7 +1,8 @@
-"""LeetCode Stats SVG Builder with Active Streak Display."""
+"""LeetCode 365-Day Submission Calendar Heatmap SVG Builder."""
 
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from utils.file_utils import ensure_dir, get_project_root, read_json, write_text
 from utils.logger import get_logger
@@ -14,7 +15,7 @@ def build_leetcode_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "leetcode-stats.svg",
 ) -> Path:
-    """Generate animated terminal-styled LeetCode progress SVG card with active streak.
+    """Generate animated 365-day LeetCode submission calendar heatmap SVG card.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -37,140 +38,193 @@ def build_leetcode_svg(
         fallback={
             "username": "Sg19o",
             "total_solved": 319,
-            "easy_solved": 145,
-            "easy_total": 820,
-            "medium_solved": 152,
-            "medium_total": 1720,
-            "hard_solved": 22,
-            "hard_total": 730,
-            "acceptance_rate": 65.4,
-            "ranking": 245000,
             "streak": 261,
+            "longest_streak": 261,
             "total_active_days": 261,
+            "submission_calendar": {},
         },
     )
 
     username = leetcode_data.get("username", "Sg19o")
     total_solved = leetcode_data.get("total_solved", 319)
-    ranking = leetcode_data.get("ranking", 0)
-    ranking_str = f"#{ranking:,}" if ranking > 0 else "N/A"
     streak = leetcode_data.get("streak", 261)
-    streak_str = f"{streak} days 🔥"
-
-    easy_s = leetcode_data.get("easy_solved", 145)
-    easy_t = max(1, leetcode_data.get("easy_total", 820))
-    easy_pct = min(100, int((easy_s / easy_t) * 100))
-
-    med_s = leetcode_data.get("medium_solved", 152)
-    med_t = max(1, leetcode_data.get("medium_total", 1720))
-    med_pct = min(100, int((med_s / med_t) * 100))
-
-    hard_s = leetcode_data.get("hard_solved", 22)
-    hard_t = max(1, leetcode_data.get("hard_total", 730))
-    hard_pct = min(100, int((hard_s / hard_t) * 100))
+    longest_streak = leetcode_data.get("longest_streak", max(261, streak))
+    active_days = leetcode_data.get("total_active_days", 261)
+    sub_map = leetcode_data.get("submission_calendar", {})
 
     width = 800
     height = 230
 
+    # Build 52 weeks (364 days) calendar grid ending today
+    now = datetime.now(timezone.utc)
+    today_date = now.date()
+
+    # Find last Sunday to align 52 full columns
+    days_since_sunday = (today_date.weekday() + 1) % 7
+    end_date = today_date
+    start_date = end_date - timedelta(days=(52 * 7 - 1) + days_since_sunday)
+
+    # Convert submission_calendar timestamps to YYYY-MM-DD counts
+    daily_counts = {}
+    for ts_str, cnt in sub_map.items():
+        try:
+            ts = int(ts_str)
+            dt = datetime.fromtimestamp(ts, timezone.utc).date()
+            daily_counts[dt.strftime("%Y-%m-%d")] = int(cnt)
+        except Exception:
+            pass
+
+    # Heatmap Theme: Signature LeetCode Amber/Orange Palette
+    c_l0 = "#161b22"
+    c_l1 = "#7c2d12"
+    c_l2 = "#c2410c"
+    c_l3 = "#f97316"
+    c_l4 = "#ffa116"
+
     css_rules = f"""
-      @keyframes barGrow {{
-        from {{ width: 0; }}
+      @keyframes heatFade {{
+        from {{ opacity: 0; transform: scale(0.6); }}
+        to {{ opacity: 1; transform: scale(1); }}
+      }}
+      .lc-tile {{
+        opacity: 0;
+        animation: heatFade 0.25s ease-out forwards;
+        transform-origin: center;
       }}
       .lc-stat-title {{
         font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 11px;
+        font-size: 10px;
         fill: {text_muted};
+        letter-spacing: 0.5px;
       }}
       .lc-stat-val {{
         font-family: 'JetBrains Mono', 'Fira Code', monospace;
         font-size: 16px;
         font-weight: bold;
-        fill: {accent};
       }}
-      .lc-diff-label {{
+      .lc-label {{
         font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 12px;
+        font-size: 9px;
+        fill: {text_muted};
+      }}
+      .lc-footer-txt {{
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 10.5px;
         font-weight: bold;
-      }}
-      .lc-diff-count {{
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        font-size: 11.5px;
         fill: {text_main};
-      }}
-      .lc-bar-bg {{
-        fill: {theme.get('background', '#0d1117')};
-        stroke: {theme.get('border', '#30363d')};
-        stroke-width: 1;
-      }}
-      .lc-bar-fill {{
-        animation: barGrow 1.2s ease-out forwards;
       }}
     """
 
-    # Top Header Summary with Streak
-    stats_svg = f"""
+    # Top Header Summary
+    header_svg = f"""
       <g transform="translate(35, 18)">
         <g transform="translate(0, 0)">
           <text x="0" y="0" class="lc-stat-title">TOTAL SOLVED</text>
           <text x="0" y="18" class="lc-stat-val" fill="#FFA116">{total_solved}</text>
         </g>
-        <g transform="translate(180, 0)">
+        <g transform="translate(200, 0)">
           <text x="0" y="0" class="lc-stat-title">CURRENT STREAK</text>
-          <text x="0" y="18" class="lc-stat-val" fill="#ff7b72">{streak_str}</text>
+          <text x="0" y="18" class="lc-stat-val" fill="#ff7b72">{streak} days 🔥</text>
         </g>
-        <g transform="translate(380, 0)">
-          <text x="0" y="0" class="lc-stat-title">GLOBAL RANKING</text>
-          <text x="0" y="18" class="lc-stat-val" fill="{accent}">{ranking_str}</text>
+        <g transform="translate(410, 0)">
+          <text x="0" y="0" class="lc-stat-title">LONGEST STREAK</text>
+          <text x="0" y="18" class="lc-stat-val" fill="{accent}">{longest_streak} days</text>
         </g>
-        <g transform="translate(580, 0)">
-          <text x="0" y="0" class="lc-stat-title">ACCEPTANCE</text>
-          <text x="0" y="18" class="lc-stat-val" fill="{theme.get('success', '#3fb950')}">{leetcode_data.get('acceptance_rate', 65.4)}%</text>
+        <g transform="translate(610, 0)">
+          <text x="0" y="0" class="lc-stat-title">ACTIVE DAYS</text>
+          <text x="0" y="18" class="lc-stat-val" fill="{theme.get('success', '#3fb950')}">{active_days} days</text>
         </g>
       </g>
       <line x1="35" y1="48" x2="765" y2="48" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
     """
 
-    # Difficulty Bars Layout
-    bar_max_w = 460
-    easy_bar_w = max(6, int((easy_s / (easy_s + med_s + hard_s or 1)) * bar_max_w * 1.6))
-    med_bar_w = max(6, int((med_s / (easy_s + med_s + hard_s or 1)) * bar_max_w * 1.6))
-    hard_bar_w = max(6, int((hard_s / (easy_s + med_s + hard_s or 1)) * bar_max_w * 1.6))
+    # Render 52-Week Grid
+    grid_svg = []
+    month_labels = []
+    current_month = None
 
-    bars_svg = f"""
-      <g transform="translate(35, 66)">
-        <!-- EASY -->
-        <g transform="translate(0, 0)">
-          <text x="0" y="14" class="lc-diff-label" fill="#00b8a3">Easy</text>
-          <rect x="90" y="2" width="{bar_max_w}" height="14" rx="4" class="lc-bar-bg"/>
-          <rect x="90" y="2" width="{easy_bar_w}" height="14" rx="4" fill="#00b8a3" class="lc-bar-fill"/>
-          <text x="{105 + bar_max_w}" y="14" class="lc-diff-count"><tspan font-weight="bold">{easy_s}</tspan> / {easy_t} ({easy_pct}%)</text>
-        </g>
+    cell_size = 10
+    cell_gap = 3.2
+    grid_x_start = 68
+    grid_y_start = 74
 
-        <!-- MEDIUM -->
-        <g transform="translate(0, 32)">
-          <text x="0" y="14" class="lc-diff-label" fill="#ffc01e">Medium</text>
-          <rect x="90" y="2" width="{bar_max_w}" height="14" rx="4" class="lc-bar-bg"/>
-          <rect x="90" y="2" width="{med_bar_w}" height="14" rx="4" fill="#ffc01e" class="lc-bar-fill"/>
-          <text x="{105 + bar_max_w}" y="14" class="lc-diff-count"><tspan font-weight="bold">{med_s}</tspan> / {med_t} ({med_pct}%)</text>
-        </g>
+    curr = start_date
+    col = 0
+    row = 0
 
-        <!-- HARD -->
-        <g transform="translate(0, 64)">
-          <text x="0" y="14" class="lc-diff-label" fill="#ff375f">Hard</text>
-          <rect x="90" y="2" width="{bar_max_w}" height="14" rx="4" class="lc-bar-bg"/>
-          <rect x="90" y="2" width="{hard_bar_w}" height="14" rx="4" fill="#ff375f" class="lc-bar-fill"/>
-          <text x="{105 + bar_max_w}" y="14" class="lc-diff-count"><tspan font-weight="bold">{hard_s}</tspan> / {hard_t} ({hard_pct}%)</text>
-        </g>
+    tile_index = 0
+    while curr <= end_date and col < 52:
+        date_str = curr.strftime("%Y-%m-%d")
+        count = daily_counts.get(date_str, 0)
+
+        # Level determination
+        if count == 0:
+            color = c_l0
+        elif count == 1:
+            color = c_l1
+        elif count <= 3:
+            color = c_l2
+        elif count <= 5:
+            color = c_l3
+        else:
+            color = c_l4
+
+        px = grid_x_start + col * (cell_size + cell_gap)
+        py = grid_y_start + row * (cell_size + cell_gap)
+
+        delay = min(700, tile_index * 3)
+        grid_svg.append(
+            f'<rect x="{px:.1f}" y="{py:.1f}" width="{cell_size}" height="{cell_size}" rx="2" fill="{color}" class="lc-tile" style="animation-delay: {delay}ms;"><title>{date_str}: {count} submissions</title></rect>'
+        )
+
+        # Month labels at the top of the grid
+        if row == 0 and curr.month != current_month:
+            current_month = curr.month
+            m_name = curr.strftime("%b")
+            month_labels.append(
+                f'<text x="{px:.1f}" y="{grid_y_start - 6}" class="lc-label">{m_name}</text>'
+            )
+
+        row += 1
+        if row > 6:
+            row = 0
+            col += 1
+
+        curr += timedelta(days=1)
+        tile_index += 1
+
+    # Day labels on the left (Mon, Wed, Fri)
+    day_labels_svg = f"""
+      <text x="35" y="{grid_y_start + 18}" class="lc-label">Mon</text>
+      <text x="35" y="{grid_y_start + 44}" class="lc-label">Wed</text>
+      <text x="35" y="{grid_y_start + 70}" class="lc-label">Fri</text>
+    """
+
+    # Footer
+    footer_y = 194
+    footer_svg = f"""
+      <text x="68" y="{footer_y}" class="lc-footer-txt">{total_solved} LeetCode problems solved in the last year</text>
+      <g transform="translate(620, {footer_y - 9})">
+        <text x="0" y="8" class="lc-label">Less</text>
+        <rect x="28" y="0" width="10" height="10" rx="2" fill="{c_l0}"/>
+        <rect x="41" y="0" width="10" height="10" rx="2" fill="{c_l1}"/>
+        <rect x="54" y="0" width="10" height="10" rx="2" fill="{c_l2}"/>
+        <rect x="67" y="0" width="10" height="10" rx="2" fill="{c_l3}"/>
+        <rect x="80" y="0" width="10" height="10" rx="2" fill="{c_l4}"/>
+        <text x="96" y="8" class="lc-label">More</text>
       </g>
     """
 
     inner_content = f"""
-      {stats_svg}
-      {bars_svg}
+      {header_svg}
+      {"".join(month_labels)}
+      {day_labels_svg}
+      {"".join(grid_svg)}
+      {footer_svg}
     """
 
     svg_str = wrap_in_terminal_window(
-        title=f"leetcode --user {username} --stats",
+        title=f"git log --leetcode --author={username}",
         content_svg=inner_content,
         width=width,
         height=height,
@@ -179,5 +233,5 @@ def build_leetcode_svg(
     )
 
     write_text(output_path, svg_str)
-    logger.info(f"Generated LeetCode stats SVG -> {output_path}")
+    logger.info(f"Generated LeetCode calendar heatmap SVG -> {output_path}")
     return output_path

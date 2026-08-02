@@ -35,16 +35,16 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
 
     readme_content = f"""<div align="center">
 
-<!-- SECTION 1: GITHUB CONTRIBUTIONS -->
-<a href="{github_url}">
-  <img src="assets/generated/contribution-graph.svg" alt="Animated Contribution Heatmap" width="800"/>
+<!-- SECTION 1: LEETCODE CALENDAR HEATMAP (AT TOP) -->
+<a href="{leetcode_url}" target="_blank">
+  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Submission Heatmap" width="800"/>
 </a>
 
 <br/><br/>
 
-<!-- SECTION 2: LEETCODE STATS CARD -->
-<a href="{leetcode_url}" target="_blank">
-  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Stats" width="800"/>
+<!-- SECTION 2: GITHUB CONTRIBUTIONS HEATMAP -->
+<a href="{github_url}">
+  <img src="assets/generated/contribution-graph.svg" alt="Animated GitHub Contribution Heatmap" width="800"/>
 </a>
 
 <br/><br/>

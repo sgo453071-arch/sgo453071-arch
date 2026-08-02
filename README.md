@@ -1,15 +1,15 @@
 <div align="center">
 
-<!-- SECTION 1: GITHUB CONTRIBUTIONS -->
-<a href="https://github.com/sgo453071-arch">
-  <img src="assets/generated/contribution-graph.svg" alt="Animated Contribution Heatmap" width="800"/>
+<!-- SECTION 1: LEETCODE CALENDAR HEATMAP (AT TOP) -->
+<a href="https://leetcode.com/u/Sg19o/" target="_blank">
+  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Submission Heatmap" width="800"/>
 </a>
 
 <br/><br/>
 
-<!-- SECTION 2: LEETCODE STATS CARD -->
-<a href="https://leetcode.com/u/Sg19o/" target="_blank">
-  <img src="assets/generated/leetcode-stats.svg" alt="Animated LeetCode Stats" width="800"/>
+<!-- SECTION 2: GITHUB CONTRIBUTIONS HEATMAP -->
+<a href="https://github.com/sgo453071-arch">
+  <img src="assets/generated/contribution-graph.svg" alt="Animated GitHub Contribution Heatmap" width="800"/>
 </a>
 
 <br/><br/>

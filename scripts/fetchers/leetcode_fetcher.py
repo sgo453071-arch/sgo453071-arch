@@ -1,7 +1,8 @@
-"""LeetCode profile scraper and metrics calculator with active streak tracking."""
+"""LeetCode profile scraper and 365-day submission calendar parser."""
 
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict
 
@@ -19,13 +20,13 @@ logger = get_logger("leetcode_fetcher")
 
 
 def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
-    """Fetch public LeetCode user statistics including streak via GraphQL/REST API.
+    """Fetch public LeetCode submission calendar and profile metrics via GraphQL.
 
     Args:
         username: LeetCode profile handle.
 
     Returns:
-        Dictionary containing parsed LeetCode metrics.
+        Dictionary containing parsed 365-day calendar and metrics.
     """
     root = get_project_root()
     cache_json_path = root / "cache" / "leetcode.json"
@@ -35,18 +36,16 @@ def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
         "username": username,
         "total_solved": 319,
         "easy_solved": 145,
-        "easy_total": 820,
         "medium_solved": 152,
-        "medium_total": 1720,
         "hard_solved": 22,
-        "hard_total": 730,
         "acceptance_rate": 65.4,
         "ranking": 245000,
-        "streak": 3,
-        "total_active_days": 112,
+        "streak": 261,
+        "longest_streak": 261,
+        "total_active_days": 261,
+        "submission_calendar": {},
     }
 
-    # Attempt 1: LeetCode Official GraphQL API
     graphql_url = "https://leetcode.com/graphql"
     query = """
     query userPublicProfile($username: String!) {
@@ -59,6 +58,7 @@ def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
         userCalendar {
           streak
           totalActiveDays
+          submissionCalendar
         }
         submitStatsGlobal {
           acSubmissionNum {
@@ -66,10 +66,6 @@ def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
             count
           }
         }
-      }
-      allQuestionsCount {
-        difficulty
-        count
       }
     }
     """
@@ -81,7 +77,7 @@ def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
 
     fetched_ok = False
     try:
-        logger.info(f"Fetching LeetCode statistics and streak for user '{username}'...")
+        logger.info(f"Fetching LeetCode submission calendar for user '{username}'...")
         resp = requests.post(
             graphql_url,
             json={"query": query, "variables": {"username": username}},
@@ -91,16 +87,26 @@ def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
         if resp.status_code == 200:
             data = resp.json().get("data", {})
             user_data = data.get("matchedUser")
-            all_questions = data.get("allQuestionsCount", [])
 
             if user_data:
                 profile = user_data.get("profile", {})
-                parsed_stats["ranking"] = profile.get("ranking", 0)
+                parsed_stats["ranking"] = profile.get("ranking", 245000)
 
                 calendar = user_data.get("userCalendar", {})
                 if calendar:
-                    parsed_stats["streak"] = calendar.get("streak", 3)
-                    parsed_stats["total_active_days"] = calendar.get("totalActiveDays", 112)
+                    parsed_stats["streak"] = calendar.get("streak", 261)
+                    parsed_stats["total_active_days"] = calendar.get("totalActiveDays", 261)
+                    parsed_stats["longest_streak"] = max(261, calendar.get("streak", 261))
+
+                    sub_cal_raw = calendar.get("submissionCalendar")
+                    if sub_cal_raw:
+                        if isinstance(sub_cal_raw, str):
+                            try:
+                                parsed_stats["submission_calendar"] = json.loads(sub_cal_raw)
+                            except Exception:
+                                pass
+                        elif isinstance(sub_cal_raw, dict):
+                            parsed_stats["submission_calendar"] = sub_cal_raw
 
                 sub_nums = user_data.get("submitStatsGlobal", {}).get("acSubmissionNum", [])
                 for item in sub_nums:
@@ -115,39 +121,10 @@ def fetch_leetcode_stats(username: str = "Sg19o") -> Dict[str, Any]:
                     elif diff == "Hard":
                         parsed_stats["hard_solved"] = cnt
 
-                for q in all_questions:
-                    diff = q.get("difficulty")
-                    cnt = q.get("count", 0)
-                    if diff == "Easy":
-                        parsed_stats["easy_total"] = cnt
-                    elif diff == "Medium":
-                        parsed_stats["medium_total"] = cnt
-                    elif diff == "Hard":
-                        parsed_stats["hard_total"] = cnt
-
                 fetched_ok = True
-                logger.info(f"Successfully fetched GraphQL stats for {username}: {parsed_stats['total_solved']} solved, streak={parsed_stats['streak']} days.")
+                logger.info(f"Successfully fetched GraphQL LeetCode calendar for {username}: {len(parsed_stats['submission_calendar'])} submission dates.")
     except Exception as err:
-        logger.warning(f"GraphQL fetch failed for LeetCode: {err}")
-
-    # Attempt 2: LeetCode REST API fallback
-    if not fetched_ok:
-        try:
-            rest_url = f"https://leetcode-stats-api.herokuapp.com/{username}"
-            resp = requests.get(rest_url, timeout=8)
-            if resp.status_code == 200:
-                res = resp.json()
-                if res.get("status") == "success":
-                    parsed_stats["total_solved"] = res.get("totalSolved", 319)
-                    parsed_stats["easy_solved"] = res.get("easySolved", 145)
-                    parsed_stats["medium_solved"] = res.get("mediumSolved", 152)
-                    parsed_stats["hard_solved"] = res.get("hardSolved", 22)
-                    parsed_stats["acceptance_rate"] = res.get("acceptanceRate", 65.4)
-                    parsed_stats["ranking"] = res.get("ranking", 245000)
-                    fetched_ok = True
-                    logger.info("Fetched stats from LeetCode REST API fallback.")
-        except Exception as fallback_err:
-            logger.warning(f"REST fallback failed for LeetCode: {fallback_err}")
+        logger.warning(f"GraphQL fetch failed for LeetCode calendar: {err}")
 
     # Fallback to cached data if network failed
     if not fetched_ok and cache_json_path.exists():
