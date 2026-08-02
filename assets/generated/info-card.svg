@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 420" width="460" height="420">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 420" width="410" height="420">
 <defs>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=swap');
@@ -11,80 +11,72 @@ font-size: 13px;
 font-weight: 600;
 fill: #8b949e;
 }
-@keyframes fadeInLine {
-from { opacity: 0; transform: translateX(-10px); }
-to { opacity: 1; transform: translateX(0); }
+@keyframes simpleFade {
+from { opacity: 0; }
+to { opacity: 1; }
 }
-.nf-line {
+.nf-row {
 opacity: 0;
-animation: fadeInLine 600ms ease-out forwards;
+animation: simpleFade 0.4s ease-out forwards;
+}
+.nf-text {
+font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+font-size: 11.5px;
 }
 .nf-key {
-font-weight: 700;
-font-size: 12px;
+font-weight: bold;
 fill: #58a6ff;
 }
 .nf-sep {
 fill: #8b949e;
 }
-.nf-val {
-font-size: 12px;
-}
-.nf-logo {
-font-size: 11px;
-font-family: monospace;
-fill: #3fb950;
-font-weight: 700;
-}
-.nfl-0 { animation-delay: 0ms; }
-.nfl-1 { animation-delay: 120ms; }
-.nfl-2 { animation-delay: 240ms; }
-.nfl-3 { animation-delay: 360ms; }
-.nfl-4 { animation-delay: 480ms; }
-.nfl-5 { animation-delay: 600ms; }
-.nfl-6 { animation-delay: 720ms; }
-.nfl-7 { animation-delay: 840ms; }
-.nfl-8 { animation-delay: 960ms; }
-.nfl-9 { animation-delay: 1080ms; }
-.nfl-10 { animation-delay: 1200ms; }
-.nfl-11 { animation-delay: 1320ms; }
-.nfl-12 { animation-delay: 1440ms; }
-.nfl-13 { animation-delay: 1560ms; }
-.nfl-14 { animation-delay: 1680ms; }
-.nfl-15 { animation-delay: 1800ms; }
-.nfl-16 { animation-delay: 1920ms; }
-.nfl-17 { animation-delay: 2040ms; }
+.nfr-0 { animation-delay: 0ms; }
+.nfr-1 { animation-delay: 60ms; }
+.nfr-2 { animation-delay: 120ms; }
+.nfr-3 { animation-delay: 180ms; }
+.nfr-4 { animation-delay: 240ms; }
+.nfr-5 { animation-delay: 300ms; }
+.nfr-6 { animation-delay: 360ms; }
+.nfr-7 { animation-delay: 420ms; }
+.nfr-8 { animation-delay: 480ms; }
+.nfr-9 { animation-delay: 540ms; }
+.nfr-10 { animation-delay: 600ms; }
+.nfr-11 { animation-delay: 660ms; }
+.nfr-12 { animation-delay: 720ms; }
+.nfr-13 { animation-delay: 780ms; }
+.nfr-14 { animation-delay: 840ms; }
+.nfr-15 { animation-delay: 900ms; }
+.nfr-16 { animation-delay: 960ms; }
 </style>
 <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
 <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
 </filter>
 </defs>
 <g class="term-window">
-<rect x="2" y="2" width="456" height="416" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#shadow)"/>
-<path d="M 2.75,10 Q 2.75,2.75 10,2.75 L 450,2.75 Q 457.25,2.75 457.25,10 L 457.25,36 L 2.75,36 Z" fill="#21262d"/>
-<line x1="2" y1="36" x2="458" y2="36" stroke="#30363d" stroke-width="1"/>
+<rect x="2" y="2" width="406" height="416" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" filter="url(#shadow)"/>
+<path d="M 2.75,10 Q 2.75,2.75 10,2.75 L 400,2.75 Q 407.25,2.75 407.25,10 L 407.25,36 L 2.75,36 Z" fill="#21262d"/>
+<line x1="2" y1="36" x2="408" y2="36" stroke="#30363d" stroke-width="1"/>
 <circle cx="16" cy="19" r="5.5" fill="#ff5f56" />
 <circle cx="32" cy="19" r="5.5" fill="#ffbd2e" />
 <circle cx="48" cy="19" r="5.5" fill="#27c93f" />
-<text x="230.0" y="23" text-anchor="middle" class="term-title">neofetch --user sgo453071-arch</text>
+<text x="205.0" y="23" text-anchor="middle" class="term-title">neofetch --user sgo453071-arch</text>
 <g transform="translate(0, 36)">
-<g class="nf-line nfl-0" transform="translate(20, 24)"><text font-size="14" font-weight="700" fill="#58a6ff">sgo453071-arch</text><text x="120" font-size="14" font-weight="700" fill="#8b949e">@</text><text x="135" font-size="14" font-weight="700" fill="#3fb950">github</text></g>
-<g class="nf-line nfl-1" transform="translate(20, 36)"><line x1="0" y1="0" x2="420" y2="0" stroke="#30363d" stroke-width="1.5"/></g>
-<g class="nf-line nfl-2" transform="translate(20, 60)"><text x="0" y="0" class="nf-key">User</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#58a6ff">Shourya (sgo453071-arch)</text></g>
-<g class="nf-line nfl-3" transform="translate(20, 83)"><text x="0" y="0" class="nf-key">Role</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#c9d1d9">Software Engineer</text></g>
-<g class="nf-line nfl-4" transform="translate(20, 106)"><text x="0" y="0" class="nf-key">OS</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#bc8cff">Linux / Windows (WSL2)</text></g>
-<g class="nf-line nfl-5" transform="translate(20, 129)"><text x="0" y="0" class="nf-key">Editor</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#3fb950">VS Code / Neovim</text></g>
-<g class="nf-line nfl-6" transform="translate(20, 152)"><text x="0" y="0" class="nf-key">Learning</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#d29922">Distributed Systems &amp; Machine Learning</text></g>
-<g class="nf-line nfl-7" transform="translate(20, 175)"><text x="0" y="0" class="nf-key">Focus</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#c9d1d9">Building AI-powered developer tools and high-performance APIs</text></g>
-<g class="nf-line nfl-8" transform="translate(20, 198)"><text x="0" y="0" class="nf-key">Backend</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#58a6ff">FastAPI, Node.js, Express, Django</text></g>
-<g class="nf-line nfl-9" transform="translate(20, 221)"><text x="0" y="0" class="nf-key">Frontend</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#bc8cff">React, Next.js, Tailwind CSS, Redux</text></g>
-<g class="nf-line nfl-10" transform="translate(20, 244)"><text x="0" y="0" class="nf-key">Database</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#3fb950">PostgreSQL, MongoDB, Redis</text></g>
-<g class="nf-line nfl-11" transform="translate(20, 267)"><text x="0" y="0" class="nf-key">Cloud</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#d29922">AWS, Docker, Vercel</text></g>
-<g class="nf-line nfl-12" transform="translate(20, 290)"><text x="0" y="0" class="nf-key">Tools</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#c9d1d9">Git, VS Code, Postman</text></g>
-<g class="nf-line nfl-13" transform="translate(20, 313)"><text x="0" y="0" class="nf-key">LeetCode</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#58a6ff">https://leetcode.com/u/Sg19o/</text></g>
-<g class="nf-line nfl-14" transform="translate(20, 336)"><text x="0" y="0" class="nf-key">GitHub</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#bc8cff">github.com/sgo453071-arch</text></g>
-<g class="nf-line nfl-15" transform="translate(20, 359)"><text x="0" y="0" class="nf-key">Portfolio</text><text x="90" y="0" class="nf-sep">:</text><text x="105" y="0" class="nf-val" fill="#3fb950">https://shourya.dev</text></g>
-<g class="nf-line nfl-17"><rect x="20" y="392" width="24" height="12" rx="3" fill="#58a6ff"/><rect x="48" y="392" width="24" height="12" rx="3" fill="#bc8cff"/><rect x="76" y="392" width="24" height="12" rx="3" fill="#3fb950"/><rect x="104" y="392" width="24" height="12" rx="3" fill="#d29922"/><rect x="132" y="392" width="24" height="12" rx="3" fill="#ff5f56"/><rect x="160" y="392" width="24" height="12" rx="3" fill="#ffbd2e"/><rect x="188" y="392" width="24" height="12" rx="3" fill="#27c93f"/><rect x="216" y="392" width="24" height="12" rx="3" fill="#c9d1d9"/></g>
+<g class="nf-row nfr-0"><text x="20" y="24" class="nf-text" font-size="13" font-weight="bold"><tspan fill="#58a6ff">sgo453071-arch</tspan><tspan fill="#8b949e">@</tspan><tspan fill="#3fb950">github</tspan></text></g>
+<g class="nf-row nfr-1"><line x1="20" y1="34" x2="390" y2="34" stroke="#30363d" stroke-width="1"/></g>
+<g class="nf-row nfr-2"><text x="20" y="52" class="nf-text"><tspan class="nf-key">OS</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#bc8cff" x="105">Linux / Windows (WSL2)</tspan></text></g>
+<g class="nf-row nfr-3"><text x="20" y="73" class="nf-text"><tspan class="nf-key">Host</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#58a6ff" x="105">github.com/sgo453071-arch</tspan></text></g>
+<g class="nf-row nfr-4"><text x="20" y="94" class="nf-text"><tspan class="nf-key">Role</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#c9d1d9" x="105">Software Engineer</tspan></text></g>
+<g class="nf-row nfr-5"><text x="20" y="115" class="nf-text"><tspan class="nf-key">Focus</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#d29922" x="105">Building AI-powered developer to</tspan></text></g>
+<g class="nf-row nfr-6"><text x="20" y="136" class="nf-text"><tspan class="nf-key">Learning</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#3fb950" x="105">Distributed Systems &amp; Machine Le</tspan></text></g>
+<g class="nf-row nfr-7"><text x="20" y="157" class="nf-text"><tspan class="nf-key">Editor</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#bc8cff" x="105">VS Code / Neovim</tspan></text></g>
+<g class="nf-row nfr-8"><text x="20" y="178" class="nf-text"><tspan class="nf-key">Backend</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#58a6ff" x="105">FastAPI, Node.js, Express</tspan></text></g>
+<g class="nf-row nfr-9"><text x="20" y="199" class="nf-text"><tspan class="nf-key">Frontend</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#bc8cff" x="105">React, Next.js, Tailwind CSS</tspan></text></g>
+<g class="nf-row nfr-10"><text x="20" y="220" class="nf-text"><tspan class="nf-key">Database</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#3fb950" x="105">PostgreSQL, MongoDB</tspan></text></g>
+<g class="nf-row nfr-11"><text x="20" y="241" class="nf-text"><tspan class="nf-key">Cloud</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#d29922" x="105">AWS, Docker</tspan></text></g>
+<g class="nf-row nfr-12"><text x="20" y="262" class="nf-text"><tspan class="nf-key">Tools</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#c9d1d9" x="105">Git, VS Code</tspan></text></g>
+<g class="nf-row nfr-13"><text x="20" y="283" class="nf-text"><tspan class="nf-key">LeetCode</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#d29922" x="105">leetcode.com/u/Sg19o</tspan></text></g>
+<g class="nf-row nfr-14"><text x="20" y="304" class="nf-text"><tspan class="nf-key">LinkedIn</tspan><tspan class="nf-sep" x="90">:</tspan><tspan fill="#58a6ff" x="105">linkedin.com/in/sg19o</tspan></text></g>
+<g class="nf-row nfr-16"><rect x="20" y="331" width="22" height="10" rx="2" fill="#58a6ff"/><rect x="46" y="331" width="22" height="10" rx="2" fill="#bc8cff"/><rect x="72" y="331" width="22" height="10" rx="2" fill="#3fb950"/><rect x="98" y="331" width="22" height="10" rx="2" fill="#d29922"/><rect x="124" y="331" width="22" height="10" rx="2" fill="#ff5f56"/><rect x="150" y="331" width="22" height="10" rx="2" fill="#ffbd2e"/><rect x="176" y="331" width="22" height="10" rx="2" fill="#27c93f"/><rect x="202" y="331" width="22" height="10" rx="2" fill="#c9d1d9"/></g>
 </g>
 </g>
 </svg>

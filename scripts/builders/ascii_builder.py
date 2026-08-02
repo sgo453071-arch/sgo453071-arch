@@ -14,9 +14,9 @@ logger = get_logger("ascii_builder")
 def build_ascii_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "ascii-profile.svg",
-    cols: int = 58,
+    cols: int = 50,
 ) -> Path:
-    """Generate animated row-by-row monochrome ASCII portrait SVG.
+    """Generate animated monochrome ASCII portrait SVG aligned with Neofetch card dimensions.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -35,65 +35,58 @@ def build_ascii_svg(
         prepped_image = ensure_profile_image()
 
     theme = config_mgr.theme
-    text_main = theme.get("text_main", "#00ff41")
+    text_main = theme.get("text_main", "#3fb950")
     accent = theme.get("accent", "#58a6ff")
 
     # Generate ASCII lines
     ascii_lines = convert_image_to_ascii(prepped_image, cols=cols, aspect_ratio=0.52)
     num_rows = len(ascii_lines)
 
-    row_height = 14
-    font_size = 11
-    width = max(420, cols * 7 + 40)
-    height = num_rows * row_height + 70
+    width = 410
+    height = 420
 
-    # Build keyframes for sequential row-by-row typing (plays ONCE)
-    row_delay_ms = 40
-    total_anim_duration = num_rows * row_delay_ms
+    row_height = 11.5
+    font_size = 9.5
 
     css_rules = [
         f"""
-        @keyframes fadeInRow {{
-          from {{ opacity: 0; transform: translateY(2px); }}
-          to {{ opacity: 1; transform: translateY(0); }}
+        @keyframes asciiFade {{
+          from {{ opacity: 0; }}
+          to {{ opacity: 1; }}
         }}
-        @keyframes cursorBlink {{
-          0%, 100% {{ opacity: 1; }}
-          50% {{ opacity: 0; }}
-        }}
-        .ascii-row {{
+        .ascii-art {{
+          font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
           font-size: {font_size}px;
           fill: {text_main};
+          white-space: pre;
           opacity: 0;
-          animation: fadeInRow 0.2s ease-out forwards;
+          animation: asciiFade 0.4s ease-out forwards;
         }}
         .ascii-cursor {{
           fill: {accent};
-          animation: cursorBlink 0.6s infinite;
+          animation: asciiFade 0.6s infinite alternate;
         }}
         """
     ]
 
-    # Dynamic delay for each row
     for idx in range(num_rows):
-        delay = idx * row_delay_ms
-        css_rules.append(f".r-{idx} {{ animation-delay: {delay}ms; }}")
+        delay = idx * 25
+        css_rules.append(f".ar-{idx} {{ animation-delay: {delay}ms; }}")
 
     custom_css = "\n".join(css_rules)
 
     lines_svg = []
-    y_offset = 24
+    y_offset = 20
     for idx, line in enumerate(ascii_lines):
         escaped_line = escape_xml(line)
         lines_svg.append(
-            f'<text x="20" y="{y_offset}" class="ascii-row r-{idx}" xml:space="preserve">{escaped_line}</text>'
+            f'<text x="16" y="{y_offset}" class="ascii-art ar-{idx}" xml:space="preserve">{escaped_line}</text>'
         )
         y_offset += row_height
 
-    # Final blinking cursor position below ASCII portrait
-    cursor_y = y_offset + 5
+    # Cursor
     lines_svg.append(
-        f'<text x="20" y="{cursor_y}" class="ascii-row r-{num_rows-1} ascii-cursor">█</text>'
+        f'<text x="16" y="{y_offset + 4}" class="ascii-art ar-{num_rows-1} ascii-cursor">█</text>'
     )
 
     inner_content = "\n".join(lines_svg)

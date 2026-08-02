@@ -14,7 +14,7 @@ def build_info_card_svg(
     config_mgr: "ConfigManager",
     output_filename: str = "info-card.svg",
 ) -> Path:
-    """Generate Linux Neofetch style system info card SVG with staggered line fade-in.
+    """Generate Linux Neofetch style system info card SVG with reliable native text rendering.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -29,7 +29,6 @@ def build_info_card_svg(
 
     prof = config_mgr.profile
     theme = config_mgr.theme
-    anim = config_mgr.animation.get("fade", {})
 
     username = config_mgr.get_username()
     name = config_mgr.get_name()
@@ -41,128 +40,110 @@ def build_info_card_svg(
     success = theme.get("success", "#3fb950")
     warning = theme.get("warning", "#d29922")
 
-    width = 460
+    width = 410
     height = 420
 
     stacks = prof.get("stacks", {})
-    backend_str = ", ".join(stacks.get("backend", ["FastAPI", "Node.js"])[:4])
-    frontend_str = ", ".join(stacks.get("frontend", ["React", "Next.js"])[:4])
-    db_str = ", ".join(stacks.get("database", ["PostgreSQL", "MongoDB"])[:3])
-    cloud_str = ", ".join(stacks.get("cloud", ["AWS", "Docker"])[:3])
-    tools_str = ", ".join(stacks.get("tools", ["Git", "VS Code"])[:3])
+    backend_str = ", ".join(stacks.get("backend", ["FastAPI", "Node.js"])[:3])
+    frontend_str = ", ".join(stacks.get("frontend", ["React", "Next.js"])[:3])
+    db_str = ", ".join(stacks.get("database", ["PostgreSQL", "MongoDB"])[:2])
+    cloud_str = ", ".join(stacks.get("cloud", ["AWS", "Docker"])[:2])
+    tools_str = ", ".join(stacks.get("tools", ["Git", "VS Code"])[:2])
 
     socials = prof.get("socials", {})
 
-    # Neofetch metadata rows
     items = [
-        ("User", f"{name} ({username})", accent),
-        ("Role", prof.get("roles", ["Software Engineer"])[0], text_main),
         ("OS", prof.get("os", "Linux / Windows"), accent_sec),
-        ("Editor", prof.get("editor", "VS Code"), success),
-        ("Learning", prof.get("learning", "Distributed Systems"), warning),
-        ("Focus", prof.get("current_focus", "AI Applications"), text_main),
+        ("Host", f"github.com/{username}", accent),
+        ("Role", prof.get("roles", ["Software Engineer"])[0], text_main),
+        ("Focus", prof.get("current_focus", "AI Applications")[:32], warning),
+        ("Learning", prof.get("learning", "Distributed Systems")[:32], success),
+        ("Editor", prof.get("editor", "VS Code"), accent_sec),
         ("Backend", backend_str, accent),
         ("Frontend", frontend_str, accent_sec),
         ("Database", db_str, success),
         ("Cloud", cloud_str, warning),
         ("Tools", tools_str, text_main),
-        ("LeetCode", socials.get("leetcode", "shourya"), accent),
-        ("GitHub", f"github.com/{username}", accent_sec),
-        ("Portfolio", socials.get("portfolio", "shourya.dev"), success),
+        ("LeetCode", "leetcode.com/u/Sg19o", warning),
+        ("LinkedIn", "linkedin.com/in/sg19o", accent),
     ]
-
-    line_delay_ms = anim.get("info_card_line_delay_ms", 100)
-    line_duration_ms = anim.get("info_card_duration_ms", 500)
 
     css_rules = [
         f"""
-        @keyframes fadeInLine {{
-          from {{ opacity: 0; transform: translateX(-10px); }}
-          to {{ opacity: 1; transform: translateX(0); }}
+        @keyframes simpleFade {{
+          from {{ opacity: 0; }}
+          to {{ opacity: 1; }}
         }}
-        .nf-line {{
+        .nf-row {{
           opacity: 0;
-          animation: fadeInLine {line_duration_ms}ms ease-out forwards;
+          animation: simpleFade 0.4s ease-out forwards;
+        }}
+        .nf-text {{
+          font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+          font-size: 11.5px;
         }}
         .nf-key {{
-          font-weight: 700;
-          font-size: 12px;
+          font-weight: bold;
           fill: {accent};
         }}
         .nf-sep {{
           fill: {text_muted};
         }}
-        .nf-val {{
-          font-size: 12px;
-        }}
-        .nf-logo {{
-          font-size: 11px;
-          font-family: monospace;
-          fill: {success};
-          font-weight: 700;
-        }}
         """
     ]
 
     for idx in range(len(items) + 4):
-        delay = idx * line_delay_ms
-        css_rules.append(f".nfl-{idx} {{ animation-delay: {delay}ms; }}")
+        delay = idx * 60
+        css_rules.append(f".nfr-{idx} {{ animation-delay: {delay}ms; }}")
 
     custom_css = "\n".join(css_rules)
 
-    # Linux OS Logo ASCII emblem for neofetch side column
-    logo_lines = [
-        "      /\\     ",
-        "     /  \\    ",
-        "    / /\\ \\   ",
-        "   / /  \\ \\  ",
-        "  / /    \\ \\ ",
-        " / /______\\ \\",
-        "/____________\\",
-    ]
-
     inner_lines = []
 
-    # Title header: shourya@github
+    # Title header: sgo453071-arch@github
     inner_lines.append(
-        f'<g class="nf-line nfl-0" transform="translate(20, 24)">'
-        f'<text font-size="14" font-weight="700" fill="{accent}">{escape_xml(username)}</text>'
-        f'<text x="120" font-size="14" font-weight="700" fill="{text_muted}">@</text>'
-        f'<text x="135" font-size="14" font-weight="700" fill="{success}">github</text>'
+        f'<g class="nf-row nfr-0">'
+        f'<text x="20" y="24" class="nf-text" font-size="13" font-weight="bold">'
+        f'<tspan fill="{accent}">{escape_xml(username)}</tspan>'
+        f'<tspan fill="{text_muted}">@</tspan>'
+        f'<tspan fill="{success}">github</tspan>'
+        f'</text>'
         f'</g>'
     )
 
-    # Separator line: --------------
+    # Separator line
     inner_lines.append(
-        f'<g class="nf-line nfl-1" transform="translate(20, 36)">'
-        f'<line x1="0" y1="0" x2="420" y2="0" stroke="{theme.get("border", "#30363d")}" stroke-width="1.5"/>'
+        f'<g class="nf-row nfr-1">'
+        f'<line x1="20" y1="34" x2="390" y2="34" stroke="{theme.get("border", "#30363d")}" stroke-width="1"/>'
         f'</g>'
     )
 
-    # Logo + Details Grid
-    y_offset = 60
+    # Details Grid
+    y_pos = 52
     for idx, (key, val, color) in enumerate(items):
         line_idx = idx + 2
         inner_lines.append(
-            f'<g class="nf-line nfl-{line_idx}" transform="translate(20, {y_offset})">'
-            f'<text x="0" y="0" class="nf-key">{escape_xml(key)}</text>'
-            f'<text x="90" y="0" class="nf-sep">:</text>'
-            f'<text x="105" y="0" class="nf-val" fill="{color}">{escape_xml(val)}</text>'
+            f'<g class="nf-row nfr-{line_idx}">'
+            f'<text x="20" y="{y_pos}" class="nf-text">'
+            f'<tspan class="nf-key">{escape_xml(key)}</tspan>'
+            f'<tspan class="nf-sep" x="90">:</tspan>'
+            f'<tspan fill="{color}" x="105">{escape_xml(val)}</tspan>'
+            f'</text>'
             f'</g>'
         )
-        y_offset += 23
+        y_pos += 21
 
     # Color palette bar (Standard neofetch footer color blocks)
-    palette_y = y_offset + 10
+    palette_y = y_pos + 6
     colors = [accent, accent_sec, success, warning, "#ff5f56", "#ffbd2e", "#27c93f", "#c9d1d9"]
     blocks_svg = []
-    x_pos = 20
+    px = 20
     for c in colors:
-        blocks_svg.append(f'<rect x="{x_pos}" y="{palette_y}" width="24" height="12" rx="3" fill="{c}"/>')
-        x_pos += 28
+        blocks_svg.append(f'<rect x="{px}" y="{palette_y}" width="22" height="10" rx="2" fill="{c}"/>')
+        px += 26
 
     palette_line_idx = len(items) + 3
-    inner_lines.append(f'<g class="nf-line nfl-{palette_line_idx}">{"".join(blocks_svg)}</g>')
+    inner_lines.append(f'<g class="nf-row nfr-{palette_line_idx}">{"".join(blocks_svg)}</g>')
 
     inner_content = "\n".join(inner_lines)
 

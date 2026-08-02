@@ -15,13 +15,13 @@
 <!-- SECTION 2: WHOAMI (ASCII PORTRAIT + NEOFETCH INFO CARD) -->
 <h3><code>sgo453071-arch@github:~$ whoami</code></h3>
 
-<table>
-  <tr>
-    <td align="center" valign="top">
-      <img src="assets/generated/ascii-profile.svg" alt="ASCII Portrait" width="410"/>
+<table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td align="center" valign="top" style="border: none; padding: 4px;">
+      <img src="assets/generated/ascii-profile.svg" alt="ASCII Portrait" width="400"/>
     </td>
-    <td align="center" valign="top">
-      <img src="assets/generated/info-card.svg" alt="Neofetch Info Card" width="410"/>
+    <td align="center" valign="top" style="border: none; padding: 4px;">
+      <img src="assets/generated/info-card.svg" alt="Neofetch Info Card" width="400"/>
     </td>
   </tr>
 </table>
@@ -31,23 +31,23 @@
 <!-- SECTION 3: PROJECTS SHOWCASE -->
 <h3><code>sgo453071-arch@github:~$ ls -l ./projects/</code></h3>
 
-<table>
-  <tr>
-    <td align="center" valign="top">
+<table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/project-disha.svg" alt="DISHA FOR INDIA Card" width="370"/>
+        <img src="assets/generated/project-disha.svg" alt="DISHA FOR INDIA Card" width="390"/>
       </a>
     </td>
-    <td align="center" valign="top">
+    <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/project-ai.svg" alt="Future AI Projects Card" width="370"/>
+        <img src="assets/generated/project-ai.svg" alt="Future AI Projects Card" width="390"/>
       </a>
     </td>
   </tr>
-  <tr>
-    <td align="center" colspan="2" valign="top">
+  <tr style="border: none;">
+    <td align="center" colspan="2" valign="top" style="border: none; padding: 4px;">
       <a href="https://github.com/sgo453071-arch">
-        <img src="assets/generated/project-portfolio.svg" alt="Portfolio Engine Card" width="370"/>
+        <img src="assets/generated/project-portfolio.svg" alt="Portfolio Engine Card" width="390"/>
       </a>
     </td>
   </tr>

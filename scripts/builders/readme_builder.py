@@ -10,7 +10,7 @@ logger = get_logger("readme_builder")
 
 
 def build_readme_file(config_mgr: "ConfigManager") -> Path:
-    """Generate production-ready centered terminal README.md document.
+    """Generate production-ready centered terminal README.md document with borderless HTML formatting.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -23,7 +23,6 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
 
     prof = config_mgr.profile
     username = config_mgr.get_username()
-    name = config_mgr.get_name()
     socials = prof.get("socials", {})
 
     readme_content = f"""<div align="center">
@@ -43,13 +42,13 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
 <!-- SECTION 2: WHOAMI (ASCII PORTRAIT + NEOFETCH INFO CARD) -->
 <h3><code>{username}@github:~$ whoami</code></h3>
 
-<table>
-  <tr>
-    <td align="center" valign="top">
-      <img src="assets/generated/ascii-profile.svg" alt="ASCII Portrait" width="410"/>
+<table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td align="center" valign="top" style="border: none; padding: 4px;">
+      <img src="assets/generated/ascii-profile.svg" alt="ASCII Portrait" width="400"/>
     </td>
-    <td align="center" valign="top">
-      <img src="assets/generated/info-card.svg" alt="Neofetch Info Card" width="410"/>
+    <td align="center" valign="top" style="border: none; padding: 4px;">
+      <img src="assets/generated/info-card.svg" alt="Neofetch Info Card" width="400"/>
     </td>
   </tr>
 </table>
@@ -59,23 +58,23 @@ def build_readme_file(config_mgr: "ConfigManager") -> Path:
 <!-- SECTION 3: PROJECTS SHOWCASE -->
 <h3><code>{username}@github:~$ ls -l ./projects/</code></h3>
 
-<table>
-  <tr>
-    <td align="center" valign="top">
+<table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="{socials.get('github', '#')}">
-        <img src="assets/generated/project-disha.svg" alt="DISHA FOR INDIA Card" width="370"/>
+        <img src="assets/generated/project-disha.svg" alt="DISHA FOR INDIA Card" width="390"/>
       </a>
     </td>
-    <td align="center" valign="top">
+    <td align="center" valign="top" style="border: none; padding: 4px;">
       <a href="{socials.get('github', '#')}">
-        <img src="assets/generated/project-ai.svg" alt="Future AI Projects Card" width="370"/>
+        <img src="assets/generated/project-ai.svg" alt="Future AI Projects Card" width="390"/>
       </a>
     </td>
   </tr>
-  <tr>
-    <td align="center" colspan="2" valign="top">
+  <tr style="border: none;">
+    <td align="center" colspan="2" valign="top" style="border: none; padding: 4px;">
       <a href="{socials.get('github', '#')}">
-        <img src="assets/generated/project-portfolio.svg" alt="Portfolio Engine Card" width="370"/>
+        <img src="assets/generated/project-portfolio.svg" alt="Portfolio Engine Card" width="390"/>
       </a>
     </td>
   </tr>
