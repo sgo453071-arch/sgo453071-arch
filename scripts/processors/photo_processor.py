@@ -1,4 +1,4 @@
-"""Image processor for high-definition crystal-clear terminal profile portrait."""
+"""Image processor for Stylized Terminal Matrix Vector Portrait."""
 
 import base64
 import sys
@@ -21,9 +21,16 @@ try:
 except Exception:
     HAS_PIL = False
 
+try:
+    import cv2  # type: ignore
+    import numpy as np  # type: ignore
+    HAS_CV2 = True
+except Exception:
+    HAS_CV2 = False
+
 
 def process_profile_photo() -> Path:
-    """Preprocess assets/profile.jpg into a 100% unclipped crystal-clear HD terminal portrait.
+    """Preprocess assets/profile.jpg into a stylized, high-contrast terminal matrix portrait.
 
     Returns:
         Path to generated assets/source-prepped.png.
@@ -43,24 +50,51 @@ def process_profile_photo() -> Path:
 
     try:
         with Image.open(input_path) as img:
-            # Preserve full original frame so coat, face, tie, and arms are 100% complete
-            full_frame = img.convert("RGB")
+            rgb = img.convert("RGB")
+            w, h = rgb.size
 
-            # High resolution 480x480 for ultra-crisp display inside SVG
-            resized = full_frame.resize((480, 480), Image.Resampling.LANCZOS)
+            # Full upper torso framing
+            cropped = rgb.crop((int(w * 0.05), int(h * 0.02), int(w * 0.95), int(h * 0.85)))
+            resized = cropped.resize((420, 420), Image.Resampling.LANCZOS)
 
-            # Contrast, Color & Sharpness Enhancements
-            contrast_enhancer = ImageEnhance.Contrast(resized)
-            boosted_contrast = contrast_enhancer.enhance(1.20)
+            if HAS_CV2:
+                try:
+                    # Convert to OpenCV BGR
+                    cv_img = cv2.cvtColor(np.array(resized), cv2.COLOR_RGB2BGR)
+                    gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
 
-            color_enhancer = ImageEnhance.Color(boosted_contrast)
-            boosted_color = color_enhancer.enhance(1.15)
+                    # Bilateral filter for smooth skin shading (removes noise dots)
+                    smooth = cv2.bilateralFilter(gray, 9, 75, 75)
 
-            sharpness_enhancer = ImageEnhance.Sharpness(boosted_color)
-            final_img = sharpness_enhancer.enhance(1.50)
+                    # CLAHE contrast enhancement for facial features
+                    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+                    enhanced = clahe.apply(smooth)
 
-            final_img.save(output_path, "PNG", quality=98)
-            logger.info(f"Successfully processed HD full-suit portrait -> {output_path}")
+                    # Adaptive threshold for clean vector line contours
+                    edges = cv2.adaptiveThreshold(
+                        enhanced, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+                    )
+
+                    # Create Matrix color posterized palette: Cyberpunk Cyan & Soft Blue
+                    color_posterized = cv2.stylization(cv_img, sigma_s=60, sigma_r=0.45)
+
+                    # Combine smooth color posterization with clean line contours
+                    combined = cv2.bitwise_and(color_posterized, color_posterized, mask=edges)
+
+                    result_pil = Image.fromarray(cv2.cvtColor(combined, cv2.COLOR_BGR2RGB))
+                    result_pil.save(output_path, "PNG")
+                    logger.info(f"Generated OpenCV Stylized Matrix Portrait -> {output_path}")
+                    return output_path
+                except Exception as cv_err:
+                    logger.warning(f"OpenCV stylization bypassed: {cv_err}")
+
+            # Fallback PIL Processing (Smooth Posterization)
+            gray_pil = resized.convert("L")
+            poster = ImageOps.posterize(resized, 3)
+            contrast_enhancer = ImageEnhance.Contrast(poster)
+            boosted = contrast_enhancer.enhance(1.3)
+            boosted.save(output_path, "PNG")
+            logger.info(f"Generated PIL Posterized Portrait -> {output_path}")
             return output_path
     except Exception as err:
         logger.error(f"Error processing profile photo: {err}")
@@ -68,10 +102,10 @@ def process_profile_photo() -> Path:
 
 
 def get_profile_photo_base64() -> str:
-    """Get base64 Data URI of assets/source-prepped.png for inline SVG embedding.
+    """Get base64 Data URI of assets/source-prepped.png.
 
     Returns:
-        Base64 string formatted as data:image/png;base64,...
+        Base64 string.
     """
     output_path = process_profile_photo()
     try:

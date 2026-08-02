@@ -1,4 +1,4 @@
-"""Crystal-Clear Terminal Portrait SVG Builder embedding HD base64 image with HUD elements."""
+"""Stylized Terminal Matrix Vector Portrait SVG Builder."""
 
 from pathlib import Path
 from typing import TYPE_CHECKING, List
@@ -16,9 +16,9 @@ logger = get_logger("ascii_builder")
 
 def build_ascii_svg(
     config_mgr: "ConfigManager",
-    output_filename: str = "profile-hd-portrait.svg",
+    output_filename: str = "matrix-portrait.svg",
 ) -> Path:
-    """Generate 100% crystal-clear animated terminal portrait SVG embedding HD base64 photo.
+    """Generate stylized animated terminal matrix portrait SVG card.
 
     Args:
         config_mgr: ConfigManager instance.
@@ -40,7 +40,7 @@ def build_ascii_svg(
     width = 390
     height = 410
 
-    # Get HD base64 image
+    # Get stylized base64 image
     img_b64 = get_profile_photo_base64()
 
     css_rules = f"""
@@ -55,11 +55,6 @@ def build_ascii_svg(
       .portrait-img {{
         animation: imgFade 0.6s ease-out forwards;
         transform-origin: center;
-      }}
-      .portrait-border {{
-        stroke: {accent};
-        stroke-width: 1.5;
-        fill: none;
       }}
       .portrait-hud {{
         font-family: 'JetBrains Mono', 'Fira Code', monospace;
@@ -84,7 +79,7 @@ def build_ascii_svg(
         <rect x="0" y="0" width="360" height="340" rx="8" fill="{bg}" stroke="{theme.get('border', '#30363d')}" stroke-width="1"/>
         <image href="{img_b64}" x="0" y="0" width="360" height="340" preserveAspectRatio="xMidYMid slice" class="portrait-img" clip-path="url(#img-clip)"/>
         
-        <!-- Corner HUD Bracket Highlights -->
+        <!-- Tech Matrix Corner Brackets -->
         <path d="M 8,20 L 8,8 L 20,8" stroke="{accent}" stroke-width="2" fill="none"/>
         <path d="M 340,8 L 352,8 L 352,20" stroke="{accent}" stroke-width="2" fill="none"/>
         <path d="M 8,320 L 8,332 L 20,332" stroke="{accent}" stroke-width="2" fill="none"/>
@@ -115,5 +110,5 @@ def build_ascii_svg(
     )
 
     write_text(output_path, svg_str)
-    logger.info(f"Generated crystal-clear HD terminal portrait SVG -> {output_path}")
+    logger.info(f"Generated stylized terminal matrix portrait SVG -> {output_path}")
     return output_path

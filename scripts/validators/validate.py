@@ -57,7 +57,7 @@ def validate_output_svgs() -> bool:
     gen_dir = root / "assets" / "generated"
 
     expected_svgs = [
-        "profile-hd-portrait.svg",
+        "matrix-portrait.svg",
         "info-card.svg",
         "contribution-graph.svg",
         "leetcode-heatmap.svg",
