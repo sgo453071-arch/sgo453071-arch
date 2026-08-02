@@ -14,6 +14,19 @@ from utils.logger import get_logger
 
 logger = get_logger("photo_processor")
 
+# Top-level optional imports (zero indentation to prevent IDE virtual snippet parse errors)
+try:
+    from PIL import Image, ImageEnhance, ImageFilter, ImageOps  # type: ignore
+    HAS_PIL = True
+except Exception:
+    HAS_PIL = False
+
+try:
+    import rembg  # type: ignore
+    HAS_REMBG = True
+except Exception:
+    HAS_REMBG = False
+
 
 def process_profile_photo() -> Path:
     """Preprocess assets/profile.jpg into contrast-boosted assets/source-prepped.png.
@@ -30,29 +43,30 @@ def process_profile_photo() -> Path:
 
     ensure_dir(output_path.parent)
 
+    if not HAS_PIL:
+        logger.warning("Pillow library not loaded, returning original input path.")
+        return input_path
+
     try:
-        from PIL import Image, ImageEnhance, ImageFilter, ImageOps  # type: ignore
-
         with Image.open(input_path) as img:
-            # Step 1: Attempt background removal if rembg is available
             processed = img
-            try:
-                import rembg  # type: ignore
-                logger.info("Applying rembg background removal...")
-                processed_bytes = rembg.remove(img)
-                if isinstance(processed_bytes, Image.Image):
-                    processed = processed_bytes
-            except Exception as rembg_err:
-                logger.warning(f"rembg background removal bypassed: {rembg_err}")
+            if HAS_REMBG:
+                try:
+                    logger.info("Applying rembg background removal...")
+                    processed_bytes = rembg.remove(img)
+                    if isinstance(processed_bytes, Image.Image):
+                        processed = processed_bytes
+                except Exception as rembg_err:
+                    logger.warning(f"rembg background removal bypassed: {rembg_err}")
 
-            # Step 2: Grayscale & Contrast boost
+            # Grayscale & Contrast boost
             gray = processed.convert("L")
             enhanced = ImageOps.autocontrast(gray)
 
             enhancer = ImageEnhance.Contrast(enhanced)
             contrast_boosted = enhancer.enhance(1.5)
 
-            # Step 3: Sharpen edges
+            # Sharpen edges
             sharpened = contrast_boosted.filter(ImageFilter.SHARPEN)
 
             sharpened.save(output_path, "PNG")
