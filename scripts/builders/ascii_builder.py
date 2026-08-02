@@ -16,7 +16,7 @@ logger = get_logger("ascii_builder")
 
 def build_ascii_svg(
     config_mgr: "ConfigManager",
-    output_filename: str = "terminal-portrait.svg",
+    output_filename: str = "profile-hd-portrait.svg",
 ) -> Path:
     """Generate 100% crystal-clear animated terminal portrait SVG embedding HD base64 photo.
 
